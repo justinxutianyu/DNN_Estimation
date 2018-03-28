@@ -115,7 +115,7 @@ accuracy = tf.reduce_mean(tf.square(tf.subtract(y, y_)))  # or could use tf.loss
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, "data/nn_model.ckpt")
+    saver.save(sess, "data/"+location+"_nn_model.ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
     for i in range(SIZE):
