@@ -22,14 +22,16 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE = 3619
-test_Size = 3619
+SIZE = 8105
+test_Size = 8105
 learning_rate = 0.01
+d =  8105 # 500
 epochs = SIZE
 batch_size = SIZE
-filename = "nn_landmarkDistance_0.01"
+location = "NewYork"
+filename = location+"nn_allDistance_0.01"
 ########################  load training data #######################
-edges = pd.read_table("data/demoGraph.txt",
+edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
                     header = None,
                     names = ['vx', 'vy', 'weight'])
@@ -38,11 +40,10 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-distanceMatrix = np.load("demoDistanceMatrix.dat")
+distanceMatrix = np.load(location+"DistanceMatrix.dat")
 print("Matrix is loaded")
 
 ## d : landmark number
-d = 500 # SIZE
 # degreee heuristic
 degree = edges.vx.value_counts()
 print(type(degree))
@@ -127,13 +128,13 @@ with tf.Session() as sess:
         batch_xs = np.zeros(shape=(SIZE, 2*d))
         batch_ys = np.zeros(shape=(SIZE,1))
         for j in range(SIZE):
-            # vi = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,0],:]))
-            # vj = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,1],:]))
-            vi = np.zeros(shape=(d))
-            vj = np.zeros(shape=(d))
-            for k in range(d):
-                vi[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
-                vj[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+            vi = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,0],:]))
+            vj = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,1],:]))
+            # vi = np.zeros(shape=(d))
+            # vj = np.zeros(shape=(d))
+            # for k in range(d):
+            #     vi[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+            #     vj[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
             # batch_xs = np.zeros(shape=(SIZE, 2*d))
             # batch_ys = np.zeros(shape=(SIZE))
             batch_xs[j] = np.concatenate([vi,vj])
@@ -165,13 +166,13 @@ with tf.Session() as sess:
         # vi = A[i,:]
         avg_cost = 0
         for j in range(test_Size):
-            vi = np.zeros(shape=(d))
-            vj = np.zeros(shape=(d))
-            for k in range(d):
-                vi[k] = distanceMatrix[i,landmarks[k]]
-                vj[k] = distanceMatrix[j,landmarks[k]]
-            # vi = np.squeeze(np.asarray(distanceMatrix[i, :]))
-            # vj = np.squeeze(np.asarray(distanceMatrix[j, :]))
+            # vi = np.zeros(shape=(d))
+            # vj = np.zeros(shape=(d))
+            # for k in range(d):
+            #     vi[k] = distanceMatrix[i,landmarks[k]]
+            #     vj[k] = distanceMatrix[j,landmarks[k]]
+            vi = np.squeeze(np.asarray(distanceMatrix[i, :]))
+            vj = np.squeeze(np.asarray(distanceMatrix[j, :]))
             # vj = A[j,:]#np.zeros(shape=(d))
             # for m in range(d):
             #     vj[m] = A[j,landmarks[m]]
