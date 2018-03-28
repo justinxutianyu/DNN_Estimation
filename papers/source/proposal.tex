@@ -1,0 +1,77 @@
+\documentclass[]{report}   % list options between brackets
+\usepackage{graphicx}
+\usepackage{color}
+
+\newtheorem{defn}{Definition}
+
+\begin{document}
+
+\begin{center}
+\textbf{Graph shortest-path distance estimation}\\
+
+
+\end{center}
+
+\noindent This document summarizes a research problems of interest after the discussions and readings.\\
+ 
+\noindent
+\textbf{Motivation:} This is a classic problem with ongoing studies being published in top venues (including \emph{Science}). 
+``Answering point-to-point distance queries in graphs is a fundamental building
+block for many applications in social networks, search, computational biology,
+computer networks, and road networks.''
+\\
+
+
+\noindent
+\textbf{Formulation:}
+
+\begin{defn}[Graph shortest-path distance (GSD) problem]
+Let  $G = \langle V, E  \rangle$ be a graph, where $V$ is a set of vertices and $E$ is a set of edges. 
+Let $d_G(u, v)$ denote the shortest-path distance of two vertices $u$ and $v$ ($u, v \in V$).
+The graph shortest-path distance problem returns $d_G(u, v)$ given any two vertices $u$ and $v$ ($u, v \in V$). 
+\end{defn}
+
+\noindent
+\textbf{Solutions:}
+
+\begin{enumerate}
+\item {\color{red}$[$Baseline 1?$]$} We learn an MLP  {\color{red}(model structure?)} $f$ that maps two vertices  $u$ and $v$ to a real value $d$, such that $|f(u, v) - d_G(u,v)|$ is minimized. 
+
+\item {\color{red}$[$Baseline 2?$]$} We learn an auto-encoder {\color{red}(what kind of AE? model structure?)} $f$ that maps a vertex $v$ to a vector \texttt{V}, such that $|f(v) \cdot f(u) - d_G(u, v)|$ is minimized. 
+
+\item $[$Proposed?$]$ We learn an auto-encoder {\color{red}(what kind of AE? model structure?)} $f$ that maps a vertex $v$ to a vector \texttt{V}, such that $|d_E(f(v), f(u)) - d_G(u, v)|$ is minimized. Here, $d_E()$  
+is a function that returns the Euclidean distance between two vectors. 
+
+\end{enumerate}
+
+\noindent
+\textbf{Research Challenges (Contributions):}
+
+\begin{enumerate}
+\item The entire matrix of $d_G(u, v)$ values is too large to be stored (otherwise we can simply store the matrix and look it up at query time). 
+We need to design an order of assessing the mini batches, such that the mini batches 
+used in close rounds can share the computation for the $d_G(u, v)$ values.
+
+{\color{red}Solution: ?} Set up some sort of traversal order?
+
+\item We need to derive a bound on the error of the predicted distance value $\hat{d}_G(u, v)$.
+
+Solution: 
+\begin{itemize}
+\item Empirical: We can test the learned model on all vertex pairs to compute the maximum error.
+
+\item {\color{red}Theoretical: We can use LSH to approximate an $n \times n$ grid and derive a bound on the distance error? German Tank problem?} Explore kernel matrix (kernel LSH)?
+
+Count min sketch (preserve inner product by XX error). Add constraint for LSH into optimization function.
+\end{itemize}
+
+\item We can use the model built to verify the existence of triangular inequality, or integrate this property into the model optimization function. {\color{red}This helps improve  the 
+model interpretability.} 
+
+{\color{red}Solution: Look up Google Tensorflow update for adding domain specific constraints.}
+
+\item Matrix value is non-continuous. How to optimize the model?
+\end{enumerate}
+
+
+\end{document}
