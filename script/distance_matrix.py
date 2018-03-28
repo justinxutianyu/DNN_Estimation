@@ -4,7 +4,7 @@
 import time
 import pandas as pd
 
-data = pd.read_table("data/demoGraph.txt",
+data = pd.read_table("data/NewYorkGraph.txt",
                     sep = " ",
                     header = None,
                     names = ['vx', 'vy', 'weight'])
@@ -17,11 +17,11 @@ graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
 
 import numpy as np
-distanceMatrix = np.zeros((3619, 3619))
+distanceMatrix = np.zeros((8105, 8105))
 for i in graph_dict.keys():
     length = nx.single_source_dijkstra_path_length(G, i)
     for j in graph_dict.keys():
         distanceMatrix[int(i),int(j)] = length[j]
     print(str(i)+"th completed")
 
-distanceMatrix.dump("demoDistanceMatrix.dat")
+distanceMatrix.dump("NewYorkYDistanceMatrix.dat")

@@ -8,7 +8,7 @@ data = pd.read_table("~/Desktop/Project/data/melbourne_graph.txt",
                     names = ['vx', 'vy', 'weight'])
 
 # d : landmark number
-d = 1000
+d = 500
 # degreee heuristic
 degree = data.vx.value_counts()
 print(type(degree))
