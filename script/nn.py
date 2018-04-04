@@ -22,14 +22,14 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE =  8105 # 3619
-test_Size = 8105 # 3619  
-learning_rate = 0.02
-d =  8105 # 500
-epochs = SIZE
+SIZE =  3619 #8105
+test_Size = 3619  #8105
+learning_rate = 0.01
+d =  3619 # 500
+epochs = 500
 batch_size = SIZE
-location = "NewYork"
-filename = location+"nn_allDistance_"+str(learning_rate)
+location = "Melbourne"
+filename = location+"nn_allDistance_Epoches_"+str(epochs)+"rate_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -119,36 +119,43 @@ with tf.Session() as sess:
     saver.save(sess, "data/"+location+"_nn_model"+str(learning_rate)+".ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
-    for i in range(SIZE):
-        # batch_xs, batch_ys = # mnist.train.next_batch(100)
-        print(str(i)+"th training")
-        avg_cost = 0
-        # vi = np.zeros(shape=(d))
-        # for k in range(d):
-        #     vi[k] = A[i,landmarks[k]]
-        batch_xs = np.zeros(shape=(SIZE, 2*d))
-        batch_ys = np.zeros(shape=(SIZE,1))
-        for j in range(SIZE):
-            vi = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,0],:]))
-            vj = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,1],:]))
+    for k in range(epochs):
+        index = np.zeros(shape=(SIZE*SIZE, 2),dtype=np.int8)
+        for i in range(SIZE):
+            for j in range(SIZE):
+                index[i*SIZE+j,0] = i
+                index[i*SIZE+j,1] = j
+        np.random.shuffle(index)
+        for i in range(SIZE):
+            # batch_xs, batch_ys = # mnist.train.next_batch(100)
+            print(str(i)+"th training")
+            avg_cost = 0
             # vi = np.zeros(shape=(d))
-            # vj = np.zeros(shape=(d))
             # for k in range(d):
-            #     vi[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
-            #     vj[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
-            # batch_xs = np.zeros(shape=(SIZE, 2*d))
-            # batch_ys = np.zeros(shape=(SIZE))
-            batch_xs[j] = np.concatenate([vi,vj])
-            batch_ys[j] = distanceMatrix[index[i*SIZE+j ,0],index[i*SIZE+j ,1]]
-        # print(batch_xs)
-        # print(batch_ys)
-        # print(sess.run(y, feed_dict={x: batch_xs}))
-        _, c = sess.run([optimizer,mse], feed_dict={x: batch_xs, y_: batch_ys})
-        # cost = (sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys}))
-        avg_cost = c/SIZE
-        loss_array.append(avg_cost)
-        #writer.add_summary(cost, i)
-        print('train_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+            #     vi[k] = A[i,landmarks[k]]
+            batch_xs = np.zeros(shape=(SIZE, 2*d))
+            batch_ys = np.zeros(shape=(SIZE,1))
+            for j in range(SIZE):
+                vi = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,0],:]))
+                vj = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,1],:]))
+                # vi = np.zeros(shape=(d))
+                # vj = np.zeros(shape=(d))
+                # for k in range(d):
+                #     vi[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+                #     vj[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+                # batch_xs = np.zeros(shape=(SIZE, 2*d))
+                # batch_ys = np.zeros(shape=(SIZE))
+                batch_xs[j] = np.concatenate([vi,vj])
+                batch_ys[j] = distanceMatrix[index[i*SIZE+j ,0],index[i*SIZE+j ,1]]
+            # print(batch_xs)
+            # print(batch_ys)
+            # print(sess.run(y, feed_dict={x: batch_xs}))
+            _, c = sess.run([optimizer,mse], feed_dict={x: batch_xs, y_: batch_ys})
+            # cost = (sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys}))
+            avg_cost = c/SIZE
+            loss_array.append(avg_cost)
+            #writer.add_summary(cost, i)
+            print('train_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
 
     plt.plot(loss_array)
     plt.ylabel('nn_loss')
