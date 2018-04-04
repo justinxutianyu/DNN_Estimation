@@ -29,7 +29,7 @@ d =  3619 # 8105 # 500
 epochs = SIZE
 batch_size = SIZE
 location = "Melbourne"
-filename = location+"nn_allDistance_"+learning_rate
+filename = location+"nn_allDistance_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
