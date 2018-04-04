@@ -24,12 +24,12 @@ import matplotlib.pyplot as plt
 ######################## set learning variables ##################
 SIZE = 8105
 test_Size = 8105
-learning_rate = 0.01
+learning_rate = 0.02
 d =  8105 # 500
 epochs = SIZE
 batch_size = SIZE
 location = "NewYork"
-filename = location+"nn_allDistance_0.01"
+filename = location+"nn_allDistance_0.02"
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -84,6 +84,7 @@ y = tf.nn.relu(tf.add(tf.matmul(hidden_out, W2), b2))
 
 ####################### Loss Function  #########################
 mse = tf.losses.mean_squared_error(y, y_)
+error = tf.reduce_mean(tf.abs(tf.subtract(y,y_)))
 
 ####################### Optimizer      #########################
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(mse)
@@ -157,6 +158,7 @@ with tf.Session() as sess:
     # Load testing data
     dif = []
     cost = 0
+    mean_error = 0.0
     for i in range(test_Size):
         test_x = np.zeros(shape=(test_Size, 2*d))
         test_y = np.zeros(shape=(test_Size, 1))
@@ -179,21 +181,27 @@ with tf.Session() as sess:
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
             test_y[j] = distanceMatrix[i,j]
+            e = sess.run(error, feed_dict={x: test_x[j],y_: test_y[j]})
+            mean_error = mean_error + e/test_y[j]
+
             # error = tf.abs(tf.subtract(y, y_))
 
         c = sess.run(mse, feed_dict={x: test_x,y_: test_y})
         avg_cost = c/SIZE
         dif.append(avg_cost)
+        
+        mean_error = mean_error/test_Size
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
         accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-        cost += avg_cost/SIZE
+        cost += c
 
         print(sess.run(
             accuracy, feed_dict={
                 x: test_x,
                 y_: test_y
             }))
-    print(cost)
+    print("MSE: ",cost/test_Size)
+    print("Mean relative error", mean_error/test_Size)
     plt.scatter(range(len(dif)), dif, label='prediction')
 
     plt.xlabel('batch')
