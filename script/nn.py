@@ -181,7 +181,7 @@ with tf.Session() as sess:
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
             test_y[j] = distanceMatrix[i,j]
-            e = sess.run(error, feed_dict={x: test_x[j],y_: test_y[j]})
+            e = sess.run(error, feed_dict={x: test_x[j,:],y_: test_y[j, :]})
             mean_error = mean_error + e/test_y[j]
 
             # error = tf.abs(tf.subtract(y, y_))
