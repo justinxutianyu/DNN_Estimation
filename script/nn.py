@@ -22,14 +22,14 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE = 8105
-test_Size = 8105
-learning_rate = 0.02
-d =  8105 # 500
+SIZE = 3619 # 8105 
+test_Size = 3619 # 8105
+learning_rate = 0.01
+d =  3619 # 8105 # 500
 epochs = SIZE
 batch_size = SIZE
-location = "NewYork"
-filename = location+"nn_allDistance_0.02"
+location = "Melbourne"
+filename = location+"nn_allDistance_"+learning_rate
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -116,7 +116,7 @@ accuracy = tf.reduce_mean(tf.square(tf.subtract(y, y_)))  # or could use tf.loss
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, "data/"+location+"_nn_model.ckpt")
+    saver.save(sess, "data/"+location+"_nn_model"+learning_rate+".ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
     for i in range(SIZE):
