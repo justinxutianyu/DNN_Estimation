@@ -22,13 +22,13 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE = 3619 # 8105 
-test_Size = 3619 # 8105
-learning_rate = 0.01
-d =  3619 # 8105 # 500
+SIZE =  8105 # 3619
+test_Size = 8105 # 3619  
+learning_rate = 0.02
+d =  8105 # 500
 epochs = SIZE
 batch_size = SIZE
-location = "Melbourne"
+location = "NewYork"
 filename = location+"nn_allDistance_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
@@ -195,7 +195,7 @@ with tf.Session() as sess:
         mean_error = mean_error/test_Size
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
         accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-        cost += c
+        cost += avg_cost
 
         print(sess.run(
             accuracy, feed_dict={
