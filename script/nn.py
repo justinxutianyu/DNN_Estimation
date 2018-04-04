@@ -22,14 +22,14 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE = 8105
-test_Size = 8105
+SIZE =  8105 # 3619
+test_Size = 8105 # 3619  
 learning_rate = 0.02
 d =  8105 # 500
 epochs = SIZE
 batch_size = SIZE
 location = "NewYork"
-filename = location+"nn_allDistance_0.02"
+filename = location+"nn_allDistance_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -116,7 +116,7 @@ accuracy = tf.reduce_mean(tf.square(tf.subtract(y, y_)))  # or could use tf.loss
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, "data/"+location+"_nn_model.ckpt")
+    saver.save(sess, "data/"+location+"_nn_model"+str(learning_rate)+".ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
     for i in range(SIZE):
@@ -181,8 +181,10 @@ with tf.Session() as sess:
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
             test_y[j] = distanceMatrix[i,j]
-            e = sess.run(error, feed_dict={x: test_x[j],y_: test_y[j]})
-            mean_error = mean_error + e/test_y[j]
+            testx = np.reshape(test_x[j],(1, 2*d))
+            testy = np.reshape(test_y[j],(1, 1))
+            e = sess.run(error, feed_dict={x: testx ,y_: testy})
+            mean_error = mean_error + e/(test_y[j] + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
 
@@ -193,7 +195,7 @@ with tf.Session() as sess:
         mean_error = mean_error/test_Size
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
         accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-        cost += c
+        cost += avg_cost
 
         print(sess.run(
             accuracy, feed_dict={
