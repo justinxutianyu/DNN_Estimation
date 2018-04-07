@@ -26,10 +26,11 @@ SIZE =  3619 #8105
 test_Size = 3619  #8105
 learning_rate = 0.01
 d =  3619 # 500
-epochs = 500
+epochs = 50
+Units = 100
 batch_size = SIZE
 location = "Melbourne"
-filename = location+"nn_allDistance_Epoches_"+str(epochs)+"rate_"+str(learning_rate)
+filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -65,13 +66,13 @@ y_ = tf.placeholder(tf.float32, [None, 1], name='y')  # 3 outputs
 # hidden layer 1
 # W1 = tf.Variable(tf.truncated_normal([2*d, 1], stddev=0.03), name='W1')
 # b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
-W1 = tf.Variable(tf.truncated_normal([2*d, 1]), name='W1')
+W1 = tf.Variable(tf.truncated_normal([2*d, Units]), name='W1')
 b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
 
 # hidden layer 2
 # W2 = tf.Variable(tf.truncated_normal([10, 3], stddev=0.03), name='W2')
 # b2 = tf.Variable(tf.truncated_normal([3]), name='b2')
-W2 = tf.Variable(tf.truncated_normal([1,1]), name='W2')
+W2 = tf.Variable(tf.truncated_normal([Units,1]), name='W2')
 b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
 
 
@@ -210,7 +211,9 @@ with tf.Session() as sess:
                 y_: test_y
             }))
     print("MSE: ",cost/test_Size)
-    print("Mean relative error", mean_error/test_Size)
+    print("Max average error: ", max(dif))
+    print("Max average error: ", min(dif))
+    print("Mean relative error", mean_error*100/test_Size)
     plt.scatter(range(len(dif)), dif, label='prediction')
 
     plt.xlabel('batch')
