@@ -22,14 +22,14 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE =  3619 #8105
-test_Size = 3619  #8105
+SIZE =  8105
+test_Size = 8105
 learning_rate = 0.01
-d =  3619 # 500
-epochs = 50
+d =  8105 # 500
+epochs = 20
 Units = 100
 batch_size = SIZE
-location = "Melbourne"
+location = "NewYork"
 filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
