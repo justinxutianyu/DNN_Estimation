@@ -22,12 +22,12 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE =  8105
-test_Size = 8105
+SIZE =  3619 # 8105
+test_Size = 3169 # 8105
 learning_rate = 0.01
-d =  8105 # 500
+d =  3619 # 500
 epochs = 20
-Units = 100
+Units = 20
 batch_size = SIZE
 location = "NewYork"
 filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
@@ -52,12 +52,12 @@ landmarks = degree[0:d].index
 
 A = nx.to_numpy_matrix(G)
 ## random shuffle input data
-index = np.zeros(shape=(SIZE*SIZE, 2),dtype=np.int8)
-for i in range(SIZE):
-    for j in range(SIZE):
-        index[i*SIZE+j,0] = i
-        index[i*SIZE+j,1] = j
-np.random.shuffle(index)
+# index = np.zeros(shape=(SIZE*SIZE, 2),dtype=np.int8)
+# for i in range(SIZE):
+#     for j in range(SIZE):
+#         index[i*SIZE+j,0] = i
+#         index[i*SIZE+j,1] = j
+# np.random.shuffle(index)
 
 ######################## set some variables #######################
 x = tf.placeholder(tf.float32, [None, 2*d], name='x')  # 3 features
