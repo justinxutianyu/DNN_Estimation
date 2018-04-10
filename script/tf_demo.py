@@ -1,9 +1,4 @@
-# Trying to define the simplest possible neural net where the output layer of the neural net is a single
-# neuron with a "continuous" (a.k.a floating point) output.  I want the neural net to output a continuous
-# value based off one or more continuous inputs.  My real problem is more complex, but this is the simplest
-# representation of it for explaining my issue.  Even though I've oversimplified this to look like a simple
-# linear regression problem (y=m*x), I want to apply this to more complex neural nets.  But if I can't get
-# it working with this simple problem, then I won't get it working for anything more complex.
+######################### import stuff ##########################
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -21,16 +16,31 @@ import logging
 logging.getLogger().setLevel(logging.INFO)
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+from sklearn.utils import check_array
+
+######################## prepare the data ########################
+# X, y = load_linnerud(return_X_y=True)
+# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE = 3619 # 8105 
-test_Size = 3619 # 8105
+def mean_absolute_percentage_error(y_true, y_pred): 
+    y_true, y_pred = check_array(y_true, y_pred)
+
+    ## Note: does not handle mix 1d representation
+    #if _is_1d(y_true): 
+    #    y_true, y_pred = _check_1d_array(y_true, y_pred)
+
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+
+SIZE =  3619 # 8105
+test_Size = 3169 # 8105
 learning_rate = 0.01
-d =  3619 # 8105 # 500
-epochs = SIZE
+d =  500 # 3619 
+epochs = 1
+Units = 1
 batch_size = SIZE
 location = "Melbourne"
-filename = location+"nn_allDistance_"+str(learning_rate)
+filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -44,6 +54,21 @@ G = nx.Graph(graph_dict)
 distanceMatrix = np.load(location+"DistanceMatrix.dat")
 print("Matrix is loaded")
 
+## d : landmark number
+# degreee heuristic
+degree = edges.vx.value_counts()
+print(type(degree))
+landmarks = degree[0:d].index
+
+A = nx.to_numpy_matrix(G)
+## random shuffle input data
+# index = np.zeros(shape=(SIZE*SIZE, 2),dtype=np.int8)
+# for i in range(SIZE):
+#     for j in range(SIZE):
+#         index[i*SIZE+j,0] = i
+#         index[i*SIZE+j,1] = j
+# np.random.shuffle(index)
+
 ######################## set some variables #######################
 x = tf.placeholder(tf.float32, [None, 2*d], name='x')  # 3 features
 y_ = tf.placeholder(tf.float32, [None, 1], name='y')  # 3 outputs
@@ -51,13 +76,13 @@ y_ = tf.placeholder(tf.float32, [None, 1], name='y')  # 3 outputs
 # hidden layer 1
 # W1 = tf.Variable(tf.truncated_normal([2*d, 1], stddev=0.03), name='W1')
 # b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
-W1 = tf.Variable(tf.truncated_normal([2*d, 1]), name='W1')
+W1 = tf.Variable(tf.truncated_normal([2*d, Units]), name='W1')
 b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
 
 # hidden layer 2
 # W2 = tf.Variable(tf.truncated_normal([10, 3], stddev=0.03), name='W2')
 # b2 = tf.Variable(tf.truncated_normal([3]), name='b2')
-W2 = tf.Variable(tf.truncated_normal([1,1]), name='W2')
+W2 = tf.Variable(tf.truncated_normal([Units,1]), name='W2')
 b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
 
 
@@ -85,15 +110,74 @@ init_op = tf.global_variables_initializer()
 # accuracy for the test set
 accuracy = tf.reduce_mean(tf.square(tf.subtract(y, y_)))  # or could use tf.losses.mean_squared_error
 
+# run
+# with tf.Session() as sess:
+#   sess.run(init_op)
+#   total_batch = int(len(y_train) / batch_size)
+#   for epoch in range(epochs):
+#     avg_cost = 0
+#     for i in range(total_batch):
+#       batch_x, batch_y = X_train[i * batch_size:min(i * batch_size + batch_size, len(X_train)), :], \
+#                          y_train[i * batch_size:min(i * batch_size + batch_size, len(y_train)), :]
+#       _, c = sess.run([optimizer, mse], feed_dict={x: batch_x, y: batch_y})
+#       avg_cost += c / total_batch
+#     if epoch % 10 == 0:
+#       print 'Epoch:', (epoch + 1), 'cost =', '{:.3f}'.format(avg_cost)
+#   print sess.run(mse, feed_dict={x: X_test, y: y_test})
+
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
     saver.save(sess, "data/"+location+"_nn_model"+str(learning_rate)+".ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
+    for k in range(epochs):
+        index = np.zeros(shape=(SIZE*SIZE, 2),dtype=np.int8)
+        for i in range(SIZE):
+            for j in range(SIZE):
+                index[i*SIZE+j,0] = i
+                index[i*SIZE+j,1] = j
+        np.random.shuffle(index)
+        for i in range(SIZE):
+            # batch_xs, batch_ys = # mnist.train.next_batch(100)
+            print(str(i)+"th training")
+            avg_cost = 0
+            # vi = np.zeros(shape=(d))
+            # for k in range(d):
+            #     vi[k] = A[i,landmarks[k]]
+            batch_xs = np.zeros(shape=(SIZE, 2*d))
+            batch_ys = np.zeros(shape=(SIZE,1))
+            for j in range(SIZE):
+                vi = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,0],:]))
+                vj = np.squeeze(np.asarray(distanceMatrix[index[i*SIZE+j ,1],:]))
+                # vi = np.zeros(shape=(d))
+                # vj = np.zeros(shape=(d))
+                # for k in range(d):
+                #     vi[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+                #     vj[k] = distanceMatrix[index[i*SIZE+j ,0],landmarks[k]]
+                # batch_xs = np.zeros(shape=(SIZE, 2*d))
+                # batch_ys = np.zeros(shape=(SIZE))
+                batch_xs[j] = np.concatenate([vi,vj])
+                batch_ys[j] = distanceMatrix[index[i*SIZE+j ,0],index[i*SIZE+j ,1]]
+            # print(batch_xs)
+            # print(batch_ys)
+            # print(sess.run(y, feed_dict={x: batch_xs}))
+            _, c = sess.run([optimizer,mse], feed_dict={x: batch_xs, y_: batch_ys})
+            # cost = (sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys}))
+            avg_cost = c/SIZE
+            loss_array.append(avg_cost)
+            #writer.add_summary(cost, i)
+            print('train_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+
+    plt.plot(loss_array)
+    plt.ylabel('nn_loss')
+    plt.savefig(filename+'_loss.png')
+    plt.show()
+
     # Load testing data
     dif = []
     cost = 0
     mean_error = 0.0
+    mean_error2 = 0.0
     for i in range(test_Size):
         test_x = np.zeros(shape=(test_Size, 2*d))
         test_y = np.zeros(shape=(test_Size, 1))
@@ -102,6 +186,7 @@ with tf.Session() as sess:
         #     vi[k] = A[i,landmarks[k]]
         # vi = A[i,:]
         avg_cost = 0
+        pred_y = np.zeros(shape=(test_Size, 1))
         for j in range(test_Size):
             # vi = np.zeros(shape=(d))
             # vj = np.zeros(shape=(d))
@@ -118,8 +203,45 @@ with tf.Session() as sess:
             test_y[j] = distanceMatrix[i,j]
             testx = np.reshape(test_x[j],(1, 2*d))
             testy = np.reshape(test_y[j],(1, 1))
-            # print(x.shape)
-            # print(y)
             e = sess.run(error, feed_dict={x: testx ,y_: testy})
-            mean_error = mean_error + e/test_y[j]
-            print(e)
+            mean_error = mean_error + e/(test_y[j] + 1)
+
+            pred_y[j] = sess.run(y, feed_dict={x: testx})
+
+            # error = tf.abs(tf.subtract(y, y_))
+
+        c = sess.run(mse, feed_dict={x: test_x,y_: test_y})
+        avg_cost = c/SIZE
+        dif.append(avg_cost)
+        
+        mean_error = mean_error/test_Size
+        temp_error = mean_absolute_percentage_error(test_y, pred_y)
+        mean_error2 += temp_error
+        print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+        print('test_step:', (i + 1), 'relative error =', '{:.3f}'.format(temp_error))
+
+        accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
+        cost += avg_cost
+
+        print(sess.run(
+            accuracy, feed_dict={
+                x: test_x,
+                y_: test_y
+            }))
+    print("MSE: ",cost/test_Size)
+    print("Max average error: ", max(dif))
+    print("Min average error: ", min(dif))
+    print("Mean relative error", mean_error*100/test_Size)
+    print("Mean relative error 2", mean_error2/test_Size)
+
+    plt.scatter(range(len(dif)), dif, label='prediction')
+
+    plt.xlabel('batch')
+    plt.ylabel('error')
+    plt.legend()
+
+    plt.savefig(filename+"_test.png")
+    plt.show()
+    # Test trained model
+    #correct_prediction = tf.equal(tf.argmax(y, 1), y_)
+    #accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
