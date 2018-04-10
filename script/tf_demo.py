@@ -32,11 +32,11 @@ def mean_absolute_percentage_error(y_true, y_pred):
 
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
-SIZE =  3619 # 8105
+SIZE =  3619 #  8105
 test_Size = 3169 # 8105
 learning_rate = 0.01
-d =  500 # 3619 
-epochs = 1
+d =  500 # 3619 # 500
+epochs = 5
 Units = 1
 batch_size = SIZE
 location = "Melbourne"
@@ -51,7 +51,8 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-distanceMatrix = np.load(location+"DistanceMatrix.dat")
+test_distanceMatrix = np.load(location+"DistanceMatrix.dat")
+distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
 ## d : landmark number

@@ -25,13 +25,9 @@ import matplotlib.pyplot as plt
 SIZE =  8105 # 3619
 test_Size = 8105 # 3169
 learning_rate = 0.01
-<<<<<<< HEAD
 d =  500
-epochs = 10
-=======
 d =  1000 # 3619 # 500
 epochs = 5
->>>>>>> 0e4fb8b3ddf6f47b66928e460be8c6481814baa7
 Units = 1
 batch_size = SIZE
 location = "NewYork"
