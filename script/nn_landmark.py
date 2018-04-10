@@ -25,7 +25,7 @@ import matplotlib.pyplot as plt
 SIZE =  3619 # 8105
 test_Size = 3169 # 8105
 learning_rate = 0.01
-d =  3619 # 500
+d =  500
 epochs = 10
 Units = 1
 batch_size = SIZE
@@ -41,8 +41,8 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-distanceMatrix = np.load(location+"DistanceMatrix.dat")
-test_distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
+test_distanceMatrix = np.load(location+"DistanceMatrix.dat")
+distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
 ## d : landmark number
