@@ -214,7 +214,7 @@ with tf.Session() as sess:
         # mean_error2 += temp_error
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
         temp_error = temp_error/test_Size
-        print('test_step:', (i + 1), 'relative error =', '{:.3f}'.format(temp_error))
+        print('test_step:', (i + 1), 'relative error =', temp_error)
 
         accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
         cost += avg_cost
