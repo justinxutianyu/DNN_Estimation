@@ -4,7 +4,7 @@
 import time
 import pandas as pd
 
-data = pd.read_table("data/NewYorkGraph.txt",
+data = pd.read_table("data/MelbourneGraph.txt",
                     sep = " ",
                     header = None,
                     names = ['vx', 'vy', 'weight'])
@@ -16,12 +16,19 @@ graph = nx.from_pandas_edgelist(data, 'vx', 'vy', 'weight')
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
 
+## d : landmark number
+# degreee heuristic
+d = 500
+degree = data.vx.value_counts()
+print(type(degree))
+landmarks = degree[0:d].index
+
 import numpy as np
-distanceMatrix = np.zeros((8105, 8105))
+distanceMatrix = np.zeros((3619, 500))
 for i in graph_dict.keys():
     length = nx.single_source_dijkstra_path_length(G, i)
-    for j in graph_dict.keys():
-        distanceMatrix[int(i),int(j)] = length[j]
+    for j in range(d):
+        distanceMatrix[int(i),int(j)] = length[landmarks[j]]
     print(str(i)+"th completed")
 
-distanceMatrix.dump("NewYorkYDistanceMatrix.dat")
+distanceMatrix.dump("MelbourneLandmarkDistanceMatrix.dat")
