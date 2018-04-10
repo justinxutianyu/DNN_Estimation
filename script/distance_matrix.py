@@ -28,7 +28,7 @@ distanceMatrix = np.zeros((3619, 500))
 for i in graph_dict.keys():
     length = nx.single_source_dijkstra_path_length(G, i)
     for j in range(d):
-        distanceMatrix[int(i),int(landmarks[j])] = length[landmarks[j]]
+        distanceMatrix[int(i),int(j)] = length[landmarks[j]]
     print(str(i)+"th completed")
 
 distanceMatrix.dump("MelbourneLandmarkDistanceMatrix.dat")
