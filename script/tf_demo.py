@@ -23,15 +23,6 @@ from sklearn.utils import check_array
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-def mean_absolute_percentage_error(y_true, y_pred): 
-    y_true = check_array(y_true)
-    y_pred = check_array(y_pred)
-
-    ## Note: does not handle mix 1d representation
-    #if _is_1d(y_true): 
-    #    y_true, y_pred = _check_1d_array(y_true, y_pred)
-
-    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
 SIZE =  3619 #  8105
 test_Size = 3169 # 8105
@@ -189,6 +180,7 @@ with tf.Session() as sess:
         # vi = A[i,:]
         avg_cost = 0
         pred_y = np.zeros(shape=(test_Size, 1))
+        temp_error = 0.0
         for j in range(test_Size):
             # vi = np.zeros(shape=(d))
             # vj = np.zeros(shape=(d))
@@ -207,8 +199,10 @@ with tf.Session() as sess:
             testy = np.reshape(test_y[j],(1, 1))
             e = sess.run(error, feed_dict={x: testx ,y_: testy})
             mean_error = mean_error + e/(test_y[j] + 1)
-
-            pred_y[j] = sess.run(y, feed_dict={x: testx})
+            
+            pred = sess.run(y, feed_dict={x: testx})
+            temp_error += abs(pred - test_y[j])/(test_y[j] + 1)
+            mean_error2 += abs(pred - test_y[j])/(test_y[j] + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
 
@@ -217,9 +211,9 @@ with tf.Session() as sess:
         dif.append(avg_cost)
         
         # mean_error = mean_error/test_Size
-        temp_error = mean_absolute_percentage_error(test_y, pred_y)
-        mean_error2 += temp_error
+        # mean_error2 += temp_error
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+        temp_error = temp_error/test_Size
         print('test_step:', (i + 1), 'relative error =', '{:.3f}'.format(temp_error))
 
         accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
