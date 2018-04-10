@@ -4,7 +4,7 @@
 import time
 import pandas as pd
 
-data = pd.read_table("data/Melbourne.txt",
+data = pd.read_table("data/MelbourneGraph.txt",
                     sep = " ",
                     header = None,
                     names = ['vx', 'vy', 'weight'])
