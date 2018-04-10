@@ -19,7 +19,7 @@ G = nx.Graph(graph_dict)
 ## d : landmark number
 # degreee heuristic
 d = 500
-degree = graph.vx.value_counts()
+degree = data.vx.value_counts()
 print(type(degree))
 landmarks = degree[0:d].index
 
