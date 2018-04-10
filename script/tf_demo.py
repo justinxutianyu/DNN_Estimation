@@ -201,8 +201,9 @@ with tf.Session() as sess:
             mean_error = mean_error + e/(test_y[j] + 1)
             
             pred = sess.run(y, feed_dict={x: testx})
-            temp_error += abs(pred - test_y[j])/(test_y[j] + 1)
-            mean_error2 += abs(pred - test_y[j])/(test_y[j] + 1)
+            y_true = test_distanceMatrix[i,j]
+            temp_error += abs(pred - y_true)/(y_true + 1)
+            mean_error2 += abs(pred - y_true)/(y_true + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
 
