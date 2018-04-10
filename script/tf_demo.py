@@ -201,7 +201,7 @@ with tf.Session() as sess:
             #     vj[m] = A[j,landmarks[m]]
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
-            test_y[j] = distanceMatrix[i,j]
+            test_y[j] = test_distanceMatrix[i,j]
             testx = np.reshape(test_x[j],(1, 2*d))
             testy = np.reshape(test_y[j],(1, 1))
             e = sess.run(error, feed_dict={x: testx ,y_: testy})
@@ -215,7 +215,7 @@ with tf.Session() as sess:
         avg_cost = c/SIZE
         dif.append(avg_cost)
         
-        mean_error = mean_error/test_Size
+        # mean_error = mean_error/test_Size
         temp_error = mean_absolute_percentage_error(test_y, pred_y)
         mean_error2 += temp_error
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
@@ -232,7 +232,7 @@ with tf.Session() as sess:
     print("MSE: ",cost/test_Size)
     print("Max average error: ", max(dif))
     print("Min average error: ", min(dif))
-    print("Mean relative error", mean_error*100/test_Size)
+    print("Mean relative error", mean_error*100/(test_Size*test_Size))
     print("Mean relative error 2", mean_error2/test_Size)
 
     plt.scatter(range(len(dif)), dif, label='prediction')
