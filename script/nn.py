@@ -25,11 +25,11 @@ import matplotlib.pyplot as plt
 SIZE =  3619 # 8105
 test_Size = 3169 # 8105
 learning_rate = 0.01
-d =  3619 # 500
+d =  500 # 3619 
 epochs = 20
-Units = 20
+Units = 10
 batch_size = SIZE
-location = "Melbourne"
+location = "NewYork"
 filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",

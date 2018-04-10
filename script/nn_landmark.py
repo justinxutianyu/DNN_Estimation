@@ -22,11 +22,11 @@ import matplotlib.pyplot as plt
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
 ######################## set learning variables ##################
-SIZE =  8105
-test_Size = 8105
+SIZE =  8105 # 3619
+test_Size = 8105 # 3169
 learning_rate = 0.01
-d =  1000 # 500
-epochs = 10
+d =  1000 # 3619 # 500
+epochs = 5
 Units = 1
 batch_size = SIZE
 location = "NewYork"
@@ -41,8 +41,8 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-distanceMatrix = np.load(location+"DistanceMatrix.dat")
-test_distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
+test_distanceMatrix = np.load(location+"DistanceMatrix.dat")
+distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
 ## d : landmark number
