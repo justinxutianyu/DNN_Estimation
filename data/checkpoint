@@ -1,2 +1,2 @@
-model_checkpoint_path: "Melbourne_nn_model0.01.ckpt"
-all_model_checkpoint_paths: "Melbourne_nn_model0.01.ckpt"
+model_checkpoint_path: "Melbourne_nn_model0.001.ckpt"
+all_model_checkpoint_paths: "Melbourne_nn_model0.001.ckpt"
