@@ -4,9 +4,9 @@
 import time
 import pandas as pd
 
-city = "NewYork"
-d = 1000
-SIZE = 8105 # 3619
+city = "Melbourne"
+d = 3619
+SIZE = 3619 # 3619
 data = pd.read_table("data/"+city+"Graph.txt",
                     sep = " ",
                     header = None,
@@ -21,16 +21,17 @@ G = nx.Graph(graph_dict)
 
 ## d : landmark number
 # degreee heuristic
-degree = data.vx.value_counts()
-print(type(degree))
-landmarks = degree[0:d].index
+# degree = data.vx.value_counts()
+# print(type(degree))
+# landmarks = degree[0:d].index
 
 import numpy as np
 distanceMatrix = np.zeros((SIZE, d))
 for i in graph_dict.keys():
     length = nx.single_source_dijkstra_path_length(G, i)
     for j in range(d):
-        distanceMatrix[int(i),int(j)] = length[landmarks[j]]
+        distanceMatrix[int(i),int(j)] = length[j]
+        print(str(i)," ",str(j)," ",length[j])
     print(str(i)+"th completed")
 
-distanceMatrix.dump(city+"LandmarkDistanceMatrix.dat")
+# distanceMatrix.dump(city+"LandmarkDistanceMatrix.dat")
