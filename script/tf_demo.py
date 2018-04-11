@@ -185,6 +185,7 @@ with tf.Session() as sess:
         pred_y = np.zeros(shape=(test_Size))
         actual_y = np.zeros(shape=(test_Size))
         temp_error = 0.0
+        preds = []
         for j in range(test_Size):
             # vi = np.zeros(shape=(d))
             # vj = np.zeros(shape=(d))
@@ -203,18 +204,20 @@ with tf.Session() as sess:
             testy = np.reshape(test_y[j],(1, 1))
             # e = sess.run(error, feed_dict={x: testx ,y_: testy})
             # mean_error = mean_error + e/(test_y[j] + 1)
-            
             pred = sess.run(y, feed_dict={x: testx})
+            pred = pred[0][0]
+            preds.append(pred)
             y_true = test_distanceMatrix[i,j]
-            pred_y[j]= pred
-            actual_y[j] = y_true
-            true_distance += pred 
-            pred_distance += y_true
+            pred_y[j] = pred
+            actual_y[j] = y_true            
+            
+            pred_distance += pred
+            true_distance += y_true
             temp_error += abs(pred - y_true)/(y_true + 1)
             mean_error2 += abs(pred - y_true)/(y_true + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
-
+        print(preds)
         c = sess.run(mse, feed_dict={x: test_x,y_: test_y})
         avg_cost = c/SIZE
         dif.append(avg_cost)
@@ -225,7 +228,7 @@ with tf.Session() as sess:
         temp_error = temp_error/test_Size
         print('test_step:', (i + 1), 'relative error =', temp_error)
         temp_error2 = mean_absolute_error(pred_y, actual_y)
-        print('test_step:', (i + 1), 'relative error =', temp_error2)
+        print('test_step:', (i + 1), 'abslute error =', temp_error2)
         mean_error += temp_error2
         # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
         cost += avg_cost
