@@ -16749,4 +16749,4 @@ MSE:  1523.131483054049
 Max average error:  4636.958275766787
 Min average error:  745.3957584968223
 Mean relative error [99.872353]
-Mean relative error 2 [[3167.8093]]
+Mean relative error 2 [[0.99962426]]

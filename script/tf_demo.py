@@ -17,6 +17,7 @@ logging.getLogger().setLevel(logging.INFO)
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from sklearn.utils import check_array
+from sklearn.metrics import mean_absolute_error
 
 ######################## prepare the data ########################
 # X, y = load_linnerud(return_X_y=True)
@@ -171,6 +172,8 @@ with tf.Session() as sess:
     cost = 0
     mean_error = 0.0
     mean_error2 = 0.0
+    true_distance = 0.0
+    pred_distance = 0.0
     for i in range(test_Size):
         test_x = np.zeros(shape=(test_Size, 2*d))
         test_y = np.zeros(shape=(test_Size, 1))
@@ -179,7 +182,8 @@ with tf.Session() as sess:
         #     vi[k] = A[i,landmarks[k]]
         # vi = A[i,:]
         avg_cost = 0
-        pred_y = np.zeros(shape=(test_Size, 1))
+        pred_y = np.zeros(shape=(test_Size))
+        actual_y = np.zeros(shape=(test_Size))
         temp_error = 0.0
         for j in range(test_Size):
             # vi = np.zeros(shape=(d))
@@ -197,11 +201,15 @@ with tf.Session() as sess:
             test_y[j] = test_distanceMatrix[i,j]
             testx = np.reshape(test_x[j],(1, 2*d))
             testy = np.reshape(test_y[j],(1, 1))
-            e = sess.run(error, feed_dict={x: testx ,y_: testy})
-            mean_error = mean_error + e/(test_y[j] + 1)
+            # e = sess.run(error, feed_dict={x: testx ,y_: testy})
+            # mean_error = mean_error + e/(test_y[j] + 1)
             
             pred = sess.run(y, feed_dict={x: testx})
             y_true = test_distanceMatrix[i,j]
+            pred_y[j]= pred
+            actual_y[j] = y_true
+            true_distance += pred 
+            pred_distance += y_true
             temp_error += abs(pred - y_true)/(y_true + 1)
             mean_error2 += abs(pred - y_true)/(y_true + 1)
 
@@ -215,21 +223,25 @@ with tf.Session() as sess:
         # mean_error2 += temp_error
         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
         temp_error = temp_error/test_Size
-        print('test_step:', (i + 1), 'relative error =', temp_error)
-
-        accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
+        print('test_step:', (i + 1), 'relative error =', '{:.3f}'.format(temp_error))
+        temp_error2 = mean_absolute_error(pred_y, actual_y)
+        print('test_step:', (i + 1), 'relative error =', '{:.3f}'.format(temp_error2))
+        mean_error += temp_error2
+        # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
         cost += avg_cost
 
-        print(sess.run(
-            accuracy, feed_dict={
-                x: test_x,
-                y_: test_y
-            }))
+        # print(sess.run(
+        #     accuracy, feed_dict={
+        #         x: test_x,
+        #         y_: test_y
+        #     }))
     print("MSE: ",cost/test_Size)
+    print("Mean actual distance: ", true_distance/(test_Size*test_Size))
+    print("Mean predicted distance: ", pred_distance/(test_Size*test_Size))
     print("Max average error: ", max(dif))
     print("Min average error: ", min(dif))
-    print("Mean relative error", mean_error*100/(test_Size*test_Size))
-    print("Mean relative error 2", mean_error2/test_Size)
+    print("Mean Absolute error", mean_error/test_Size)
+    print("Mean relative error", mean_error2*100/(test_Size*test_Size))
 
     plt.scatter(range(len(dif)), dif, label='prediction')
 
