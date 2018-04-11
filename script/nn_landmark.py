@@ -25,7 +25,6 @@ import matplotlib.pyplot as plt
 SIZE =  8105 # 3619
 test_Size = 8105 # 3169
 learning_rate = 0.01
-d =  500
 d =  1000 # 3619 # 500
 epochs = 5
 Units = 1

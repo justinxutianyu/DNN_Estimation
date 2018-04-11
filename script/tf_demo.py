@@ -5,6 +5,7 @@ from __future__ import print_function
 
 import argparse
 import sys
+import time
 
 import tensorflow as tf
 import numpy as np
@@ -23,17 +24,20 @@ from sklearn.metrics import mean_absolute_error
 # X, y = load_linnerud(return_X_y=True)
 # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, shuffle=False)
 
+######################## time stamp ##################
+timestr = time.strftime("%Y%m%d-%H%M%S")
+
 ######################## set learning variables ##################
 
 SIZE =  3619 #  8105
 test_Size = 3169 # 8105
-learning_rate = 0.01
-d =  500 # 3619 # 500
+learning_rate = 0.001
+d =  3619 # 500
 epochs = 1
 Units = 1
 batch_size = SIZE
 location = "Melbourne"
-filename = location+"_nn_allDistance_Units_"+str(Units)+"_Epoches_"+str(epochs)+"_rate_"+str(learning_rate)
+filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
                     sep = " ",
@@ -44,8 +48,8 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-test_distanceMatrix = np.load(location+"DistanceMatrix.dat")
-distanceMatrix = np.load(location+"LandmarkDistanceMatrix.dat")
+# test_distanceMatrix = np.load(location+"DistanceMatrix.dat")
+distanceMatrix = np.load(location+"DistanceMatrix.dat")
 print("Matrix is loaded")
 
 ## d : landmark number
@@ -70,13 +74,13 @@ y_ = tf.placeholder(tf.float32, [None, 1], name='y')  # 3 outputs
 # hidden layer 1
 # W1 = tf.Variable(tf.truncated_normal([2*d, 1], stddev=0.03), name='W1')
 # b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
-W1 = tf.Variable(tf.truncated_normal([2*d, Units]), name='W1')
+W1 = tf.Variable(tf.truncated_normal([2*d, Units], mean=0.0, stddev=1), name='W1')
 b1 = tf.Variable(tf.truncated_normal([1]), name='b1')
 
 # hidden layer 2
 # W2 = tf.Variable(tf.truncated_normal([10, 3], stddev=0.03), name='W2')
 # b2 = tf.Variable(tf.truncated_normal([3]), name='b2')
-W2 = tf.Variable(tf.truncated_normal([Units,1]), name='W2')
+W2 = tf.Variable(tf.truncated_normal([Units,1], mean=0.0, stddev=1), name='W2')
 b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
 
 
@@ -199,7 +203,7 @@ with tf.Session() as sess:
             #     vj[m] = A[j,landmarks[m]]
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
-            test_y[j] = test_distanceMatrix[i,j]
+            test_y[j] = distanceMatrix[i,j] # use the origin matrix
             testx = np.reshape(test_x[j],(1, 2*d))
             testy = np.reshape(test_y[j],(1, 1))
             # e = sess.run(error, feed_dict={x: testx ,y_: testy})
@@ -207,7 +211,7 @@ with tf.Session() as sess:
             pred = sess.run(y, feed_dict={x: testx})
             pred = pred[0][0]
             preds.append(pred)
-            y_true = test_distanceMatrix[i,j]
+            y_true =  test_y[j]
             pred_y[j] = pred
             actual_y[j] = y_true            
             
