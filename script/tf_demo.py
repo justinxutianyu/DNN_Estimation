@@ -29,14 +29,14 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 ######################## set learning variables ##################
 
-SIZE =  3619 #  8105
-test_Size = 3169 # 8105
-learning_rate = 0.001
-d =  3619 # 500
+SIZE =  8105 #3619 #  8105
+test_Size = 8105 # 8105
+learning_rate = 0.01
+d =  8105 # 500
 epochs = 1
 Units = 1
 batch_size = SIZE
-location = "Melbourne"
+location = "NewYork"
 filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 ########################  load training data #######################
 edges = pd.read_table("data/"+location+"Graph.txt",
