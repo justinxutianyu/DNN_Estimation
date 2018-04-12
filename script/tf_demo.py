@@ -86,16 +86,20 @@ b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
 
 ######################## Activations, outputs ######################
 # output hidden layer 1
-hidden_out = tf.nn.relu(tf.add(tf.matmul(x, W1), b1))
+hidden_out = tf.nn.relu(tf.matmul(x, W1) + b1)
 
 # total output
-y = tf.nn.relu(tf.add(tf.matmul(hidden_out, W2), b2))
+y = tf.nn.relu(tf.matmul(hidden_out, W2) + b2)
 
 ####################### Loss Function  #########################
 mse = tf.losses.mean_squared_error(y, y_)
 error = tf.reduce_mean(tf.abs(tf.subtract(y,y_)))
 
 ####################### Optimizer      #########################
+_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
+print(_vars)
+
+sys.exit(0)
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(mse)
 
 ####################### Saver         #########################
