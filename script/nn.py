@@ -197,7 +197,7 @@ with tf.Session() as sess:
             # error = tf.abs(tf.subtract(y, y_))
 
         c = sess.run(mse, feed_dict={x: test_x,y_: test_y})
-        avg_cost = c/SIZE
+        avg_cost = c
         dif.append(avg_cost)
         
         mean_error = mean_error/test_Size

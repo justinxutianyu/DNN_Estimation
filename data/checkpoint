@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 model_checkpoint_path: "NewYork_nn_model0.01.ckpt"
 all_model_checkpoint_paths: "NewYork_nn_model0.01.ckpt"
+=======
+model_checkpoint_path: "Melbourne_nn_model0.001.ckpt"
+all_model_checkpoint_paths: "Melbourne_nn_model0.001.ckpt"
+>>>>>>> 4cc3f1ee8d26ddbcfe08e558a5b1b159e359e12b
