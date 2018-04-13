@@ -29,10 +29,20 @@ SIZE =  3619 #3619 #  8105
 test_Size = 3619 # 8105
 learning_rate = 0.001
 d =  3619 # 500
-epochs = 1
-Units = 1 
+epochs = 20
+Units = 100
 batch_size = SIZE
-location = "NewYork"
+location = "Melbourne"
+
+# SIZE =  8105
+# test_Size = 8105
+# learning_rate = 0.001
+# d =  8105 # 500
+# epochs = 1
+# Units = 100
+# batch_size = SIZE
+# location = "NewYork"
+
 filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 
 ########################  loading data and graph #######################
@@ -46,7 +56,7 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
 # test_distance_matrix = np.load(location+"distance_matrix.dat")
-distance_matrix = np.load(location+"distance_matrix.dat")
+distance_matrix = np.load(location+"DistanceMatrix.dat")
 print("Matrix is loaded")
 
 ######################## preprocessing data #######################
@@ -92,11 +102,11 @@ mse = tf.losses.mean_squared_error(y, y_)
 # error = tf.reduce_mean(tf.abs(tf.subtract(y,y_)))
 
 ####################### Optimizer      #########################
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
-trainable_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
-gradients_op = tf.gradients(mse, trainable_vars)
+# optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate)
+# trainable_vars = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES)
+# gradients_op = tf.gradients(mse, trainable_vars)
 
-apply_gradients = optimizer.apply_gradients(zip(gradients_op, trainable_vars))
+# apply_gradients = optimizer.apply_gradients(zip(gradients_op, trainable_vars))
 # print(trainable_vars)
 # print("--" * 50)
 # print(gradients_op)
@@ -105,7 +115,7 @@ apply_gradients = optimizer.apply_gradients(zip(gradients_op, trainable_vars))
 # print("--" * 50)
 
 # sys.exit(0)
-# optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(mse)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=learning_rate).minimize(mse)
 
 # ####################### Saver         #########################
 saver = tf.train.Saver()
@@ -113,10 +123,6 @@ saver = tf.train.Saver()
 # ###################### Initialize, Accuracy and Run #################
 # # initialize variables
 # init_op = tf.global_variables_initializer()
-
-# # accuracy for the test set
-# accuracy = tf.reduce_mean(tf.square(tf.subtract(y, y_)))  # or could use tf.losses.mean_squared_error
-
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
@@ -154,98 +160,91 @@ with tf.Session() as sess:
             #writer.add_summary(cost, i)
             print('train_step:', (i + 1), 'cost =', '{:.6f}'.format(c))
 
-#     plt.plot(loss_array)
-#     plt.ylabel('nn_loss')
-#     plt.savefig(filename+'_loss.png')
-#     plt.show()
+    plt.plot(loss_array)
+    plt.ylabel('nn_loss')
+    plt.savefig("picture/"+filename+'_loss.png')
+    plt.show()
 
-#     # Load testing data
-#     dif = []
-#     cost = 0
-#     mean_error = 0.0
-#     mean_error2 = 0.0
-#     true_distance = 0.0
-#     pred_distance = 0.0
-#     for i in range(test_Size):
-#         test_x = np.zeros(shape=(test_Size, 2*d))
-#         test_y = np.zeros(shape=(test_Size, 1))
-#         # vi = np.zeros(shape=(d))
-#         # for k in range(d):
-#         #     vi[k] = A[i,landmarks[k]]
-#         # vi = A[i,:]
-#         avg_cost = 0
-#         pred_y = np.zeros(shape=(test_Size))
-#         actual_y = np.zeros(shape=(test_Size))
-#         temp_error = 0.0
-#         preds = []
-#         for j in range(test_Size):
-#             # vi = np.zeros(shape=(d))
-#             # vj = np.zeros(shape=(d))
-#             # for k in range(d):
-#             #     vi[k] = distance_matrix[i,landmarks[k]]
-#             #     vj[k] = distance_matrix[j,landmarks[k]]
-#             vi = np.squeeze(np.asarray(distance_matrix[i, :]))
-#             vj = np.squeeze(np.asarray(distance_matrix[j, :]))
-#             # vj = A[j,:]#np.zeros(shape=(d))
-#             # for m in range(d):
-#             #     vj[m] = A[j,landmarks[m]]
-#             # test_x[j] = np.hstack((vi,vj))
-#             test_x[j] = np.concatenate([vi,vj])
-#             test_y[j] = distance_matrix[i,j] # use the origin matrix
-#             testx = np.reshape(test_x[j],(1, 2*d))
-#             testy = np.reshape(test_y[j],(1, 1))
-#             # e = sess.run(error, feed_dict={x: testx ,y_: testy})
-#             # mean_error = mean_error + e/(test_y[j] + 1)
-#             pred = sess.run(y, feed_dict={x: testx})
-#             pred = pred[0][0]
-#             preds.append(pred)
-#             y_true =  test_y[j]
-#             pred_y[j] = pred
-#             actual_y[j] = y_true            
+    # Load testing data
+    dif = []
+    cost = 0
+    mean_error = 0.0
+    mean_error2 = 0.0
+    true_distance = 0.0
+    pred_distance = 0.0
+    for i in range(test_Size):
+        test_x = np.zeros(shape=(test_Size, 2*d))
+        test_y = np.zeros(shape=(test_Size, 1))
+        # vi = np.zeros(shape=(d))
+        # for k in range(d):
+        #     vi[k] = A[i,landmarks[k]]
+        # vi = A[i,:]
+        avg_cost = 0
+        pred_y = np.zeros(shape=(test_Size))
+        actual_y = np.zeros(shape=(test_Size))
+        temp_error = 0.0
+        preds = []
+        for j in range(test_Size):
+            # vi = np.zeros(shape=(d))
+            # vj = np.zeros(shape=(d))
+            # for k in range(d):
+            #     vi[k] = distance_matrix[i,landmarks[k]]
+            #     vj[k] = distance_matrix[j,landmarks[k]]
+            vi = np.squeeze(np.asarray(distance_matrix[i, :]))
+            vj = np.squeeze(np.asarray(distance_matrix[j, :]))
+            # vj = A[j,:]#np.zeros(shape=(d))
+            # for m in range(d):
+            #     vj[m] = A[j,landmarks[m]]
+            # test_x[j] = np.hstack((vi,vj))
+            test_x[j] = np.concatenate([vi,vj])
+            test_y[j] = distance_matrix[i,j] # use the origin matrix
+            testx = np.reshape(test_x[j],(1, 2*d))
+            testy = np.reshape(test_y[j],(1, 1))
+            # e = sess.run(error, feed_dict={x: testx ,y_: testy})
+            # mean_error = mean_error + e/(test_y[j] + 1)
+            pred = sess.run(y, feed_dict={x: testx})
+            pred = pred[0][0]
+            preds.append(pred)
+            y_true =  test_y[j]
+            pred_y[j] = pred * max_distance
+            actual_y[j] = y_true * max_distance           
             
-#             pred_distance += pred
-#             true_distance += y_true
-#             temp_error += abs(pred - y_true)/(y_true + 1)
-#             mean_error2 += abs(pred - y_true)/(y_true + 1)
+            pred_distance += pred
+            true_distance += y_true
+            temp_error += abs(pred - y_true)/(y_true + 1)
+            mean_error2 += abs(pred - y_true)/(y_true + 1)
 
-#             # error = tf.abs(tf.subtract(y, y_))
-#         print(preds)
-#         c = sess.run(mse, feed_dict={x: test_x,y_: test_y})
-#         avg_cost = c/SIZE
-#         dif.append(avg_cost)
+            # error = tf.abs(tf.subtract(y, y_))
+        print(preds)
+        c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
+        avg_cost = c/SIZE
+        dif.append(avg_cost)
         
-#         # mean_error = mean_error/test_Size
-#         # mean_error2 += temp_error
-#         print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
-#         temp_error = temp_error/test_Size
-#         print('test_step:', (i + 1), 'relative error =', temp_error)
-#         temp_error2 = mean_absolute_error(pred_y, actual_y)
-#         print('test_step:', (i + 1), 'abslute error =', temp_error2)
-#         mean_error += temp_error2
-#         # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-#         cost += avg_cost
+        # mean_error = mean_error/test_Size
+        # mean_error2 += temp_error
+        print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+        temp_error = temp_error/test_Size
+        print('test_step:', (i + 1), 'relative error =', temp_error*100)
+        temp_error2 = mean_absolute_error(pred_y, actual_y)
+        print('test_step:', (i + 1), 'abslute error =', temp_error2)
+        mean_error += temp_error2
+        # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
+        cost += avg_cost
 
-#         # print(sess.run(
-#         #     accuracy, feed_dict={
-#         #         x: test_x,
-#         #         y_: test_y
-#         #     }))
-#     print("MSE: ",cost/test_Size)
-#     print("Mean actual distance: ", true_distance/(test_Size*test_Size))
-#     print("Mean predicted distance: ", pred_distance/(test_Size*test_Size))
-#     print("Max average error: ", max(dif))
-#     print("Min average error: ", min(dif))
-#     print("Mean Absolute error", mean_error/test_Size)
-#     print("Mean relative error", mean_error2*100/(test_Size*test_Size))
+    print("MSE: ",cost/test_Size)
+    print("Mean actual distance: ", true_distance/(test_Size*test_Size))
+    print("Mean predicted distance: ", pred_distance/(test_Size*test_Size))
+    print("Max average error: ", max(dif))
+    print("Min average error: ", min(dif))
+    print("Mean Absolute error", mean_error/test_Size)
+    print("Mean relative error", mean_error2*100/(test_Size*test_Size))
 
-#     plt.scatter(range(len(dif)), dif, label='prediction')
+    plt.scatter(range(len(dif)), dif, label='prediction')
 
-#     plt.xlabel('batch')
-#     plt.ylabel('error')
-#     plt.legend()
+    plt.xlabel('batch')
+    plt.ylabel('error')
+    plt.legend()
 
-#     plt.savefig(filename+"_test.png")
-#     plt.show()
-#     # Test trained model
-#     #correct_prediction = tf.equal(tf.argmax(y, 1), y_)
-#     #accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+    plt.savefig("picture/"+filename+"_test.png")
+    plt.show()
+
