@@ -205,7 +205,7 @@ with tf.Session() as sess:
             pred = sess.run(y, feed_dict={x: testx})
             pred = pred[0][0]
             preds.append(pred)
-            y_true =  test_y[j]
+            y_true =  distance_matrix[i,j]
             pred_y[j] = pred * max_distance
             actual_y[j] = y_true * max_distance           
             
