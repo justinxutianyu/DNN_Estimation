@@ -215,7 +215,7 @@ with tf.Session() as sess:
             mean_error2 += abs(pred - y_true)/(y_true + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
-        print(preds)
+        # print(preds)
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
         dif.append(c)
         
