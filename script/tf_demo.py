@@ -25,23 +25,23 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 ######################## set parameters ##################
 
-SIZE =  3619 #3619 #  8105
-test_Size = 3619 # 8105
-learning_rate = 0.001
-d =  3619 # 500
-epochs = 20
-Units = 100
-batch_size = SIZE
-location = "Melbourne"
-
-# SIZE =  8105
-# test_Size = 8105
+# SIZE =  3619 #3619 #  8105
+# test_Size = 3619 # 8105
 # learning_rate = 0.001
-# d =  8105 # 500
-# epochs = 1
+# d =  3619 # 500
+# epochs = 20
 # Units = 100
 # batch_size = SIZE
-# location = "NewYork"
+# location = "Melbourne"
+
+SIZE =  8105
+test_Size = 8105
+learning_rate = 0.001
+d =  8105 # 500
+epochs = 10
+Units = 100
+batch_size = SIZE
+location = "NewYork"
 
 filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 
