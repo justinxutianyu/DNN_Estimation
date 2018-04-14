@@ -25,23 +25,23 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 ######################## set parameters ##################
 
-SIZE =  3619 #3619 #  8105
-test_Size = 3619 # 8105
-learning_rate = 0.001
-d =  3619 # 500
-epochs = 20
-Units = 100
-batch_size = SIZE
-location = "Melbourne"
-
-# SIZE =  8105
-# test_Size = 8105
+# SIZE =  3619 #3619 #  8105
+# test_Size = 3619 # 8105
 # learning_rate = 0.001
-# d =  8105 # 500
-# epochs = 1
+# d =  3619 # 500
+# epochs = 20
 # Units = 100
 # batch_size = SIZE
-# location = "NewYork"
+# location = "Melbourne"
+
+SIZE =  8105
+test_Size = 8105
+learning_rate = 0.001
+d =  8105 # 500
+epochs = 10
+Units = 100
+batch_size = SIZE
+location = "NewYork"
 
 filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 
@@ -215,21 +215,20 @@ with tf.Session() as sess:
             mean_error2 += abs(pred - y_true)/(y_true + 1)
 
             # error = tf.abs(tf.subtract(y, y_))
-        print(preds)
+        # print(preds)
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
-        avg_cost = c/SIZE
-        dif.append(avg_cost)
+        dif.append(c)
         
         # mean_error = mean_error/test_Size
         # mean_error2 += temp_error
-        print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+        print('test_step:', (i + 1), 'mean squared error =', '{:.6f}'.format(avg_cocst))
         temp_error = temp_error/test_Size
         print('test_step:', (i + 1), 'relative error =', temp_error*100)
         temp_error2 = mean_absolute_error(pred_y, actual_y)
         print('test_step:', (i + 1), 'abslute error =', temp_error2)
         mean_error += temp_error2
         # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-        cost += avg_cost
+        cost += c
 
     print("MSE: ",cost/test_Size)
     print("Mean actual distance: ", true_distance/(test_Size*test_Size))
