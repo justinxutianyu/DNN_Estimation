@@ -217,19 +217,18 @@ with tf.Session() as sess:
             # error = tf.abs(tf.subtract(y, y_))
         print(preds)
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
-        avg_cost = c/SIZE
-        dif.append(avg_cost)
+        dif.append(c)
         
         # mean_error = mean_error/test_Size
         # mean_error2 += temp_error
-        print('test_step:', (i + 1), 'cost =', '{:.3f}'.format(avg_cost))
+        print('test_step:', (i + 1), 'mean squared error =', '{:.6f}'.format(avg_cocst))
         temp_error = temp_error/test_Size
         print('test_step:', (i + 1), 'relative error =', temp_error*100)
         temp_error2 = mean_absolute_error(pred_y, actual_y)
         print('test_step:', (i + 1), 'abslute error =', temp_error2)
         mean_error += temp_error2
         # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
-        cost += avg_cost
+        cost += c
 
     print("MSE: ",cost/test_Size)
     print("Mean actual distance: ", true_distance/(test_Size*test_Size))
