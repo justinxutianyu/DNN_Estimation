@@ -25,23 +25,23 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 ######################## set parameters ##################
 
-# SIZE =  3619 #3619 #  8105
-# test_Size = 3619 # 8105
-# learning_rate = 0.001
-# d =  3619 # 500
-# epochs = 20
-# Units = 100
-# batch_size = SIZE
-# location = "Melbourne"
-
-SIZE =  8105
-test_Size = 8105
+SIZE =  3619 #3619 #  8105
+test_Size = 3619 # 8105
 learning_rate = 0.001
-d =  8105 # 500
-epochs = 10
+d = 500
+epochs = 20
 Units = 100
 batch_size = SIZE
-location = "NewYork"
+location = "Melbourne"
+
+# SIZE =  8105
+# test_Size = 8105
+# learning_rate = 0.001
+# d =  8105 # 500
+# epochs = 10
+# Units = 100
+# batch_size = SIZE
+# location = "NewYork"
 
 filename = location+"_NN"+timestr+"_"+str(Units)+"Units"+str(epochs)+"Epochs"+str(learning_rate)+"Rate"
 
@@ -55,8 +55,8 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-# test_distance_matrix = np.load(location+"distance_matrix.dat")
-distance_matrix = np.load(location+"DistanceMatrix.dat")
+test_distance_matrix = np.load(location+"DistanceMatrix.dat")
+distance_matrix = np.load(location+"LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
 ######################## preprocessing data #######################
@@ -65,7 +65,7 @@ distance_matrix = distance_matrix/max_distance
 # # d : landmark number
 # # degreee heuristic
 # degree = edges.vx.value_counts()
-# print(type(degree))
+# # print(type(degree))
 # landmarks = degree[0:d].index
 # A = nx.to_numpy_matrix(G)
 
@@ -126,7 +126,7 @@ saver = tf.train.Saver()
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, "data/"+location+"_nn_model"+str(learning_rate)+".ckpt")
+    saver.save(sess, "data/"+filename+".ckpt")
     # total_batch = int(len(y_train) / batch_size)
     loss_array = []
     for k in range(epochs):
@@ -156,7 +156,7 @@ with tf.Session() as sess:
             _, c = sess.run([optimizer, mse], feed_dict={x: batch_xs, y_: batch_ys})
             # cost = (sess.run(loss, feed_dict={x: batch_xs, y_: batch_ys}))
             # avg_cost = c/SIZE
-            # loss_array.append(avg_cost)
+            loss_array.append(c)
             #writer.add_summary(cost, i)
             print('train_step:', (i + 1), 'cost =', '{:.6f}'.format(c))
 
@@ -197,7 +197,7 @@ with tf.Session() as sess:
             #     vj[m] = A[j,landmarks[m]]
             # test_x[j] = np.hstack((vi,vj))
             test_x[j] = np.concatenate([vi,vj])
-            test_y[j] = distance_matrix[i,j] # use the origin matrix
+            test_y[j] = test_distance_matrix[i,j] # use the origin matrix
             testx = np.reshape(test_x[j],(1, 2*d))
             testy = np.reshape(test_y[j],(1, 1))
             # e = sess.run(error, feed_dict={x: testx ,y_: testy})
@@ -205,7 +205,7 @@ with tf.Session() as sess:
             pred = sess.run(y, feed_dict={x: testx})
             pred = pred[0][0]
             preds.append(pred)
-            y_true =  distance_matrix[i,j]
+            y_true =  test_y[j, 0]
             pred_y[j] = pred * max_distance
             actual_y[j] = y_true * max_distance           
             
@@ -221,7 +221,7 @@ with tf.Session() as sess:
         
         # mean_error = mean_error/test_Size
         # mean_error2 += temp_error
-        print('test_step:', (i + 1), 'mean squared error =', '{:.6f}'.format(avg_cocst))
+        print('test_step:', (i + 1), 'mean squared error =', '{:.6f}'.format(c))
         temp_error = temp_error/test_Size
         print('test_step:', (i + 1), 'relative error =', temp_error*100)
         temp_error2 = mean_absolute_error(pred_y, actual_y)
@@ -231,14 +231,14 @@ with tf.Session() as sess:
         cost += c
 
     print("MSE: ",cost/test_Size)
-    print("Mean actual distance: ", true_distance/(test_Size*test_Size))
-    print("Mean predicted distance: ", pred_distance/(test_Size*test_Size))
+    print("Mean actual distance: ", true_distance*max_distance/(test_Size*test_Size))
+    print("Mean predicted distance: ", pred_distance*max_distance/(test_Size*test_Size))
     print("Max average error: ", max(dif))
     print("Min average error: ", min(dif))
     print("Mean Absolute error", mean_error/test_Size)
     print("Mean relative error", mean_error2*100/(test_Size*test_Size))
 
-    plt.scatter(range(len(dif)), dif, label='prediction')
+    plt.plot(dif)
 
     plt.xlabel('batch')
     plt.ylabel('error')
