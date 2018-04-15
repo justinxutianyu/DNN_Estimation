@@ -60,8 +60,9 @@ distance_matrix = np.load(location+"LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
 ######################## preprocessing data #######################
-max_distance = np.amax(distance_matrix)
+max_distance = np.amax(test_distance_matrix)
 distance_matrix = distance_matrix/max_distance
+test_distance_matrix = test_distance_matrix/max_distance
 # # d : landmark number
 # # degreee heuristic
 # degree = edges.vx.value_counts()
@@ -150,7 +151,7 @@ with tf.Session() as sess:
                 vj = np.squeeze(np.asarray(distance_matrix[index[i*SIZE+j ,1],:]))
 
                 batch_xs[j] = np.concatenate([vi,vj])
-                batch_ys[j] = distance_matrix[index[i*SIZE+j ,0],index[i*SIZE+j ,1]]
+                batch_ys[j] = test_distance_matrix[index[i*SIZE+j ,0],index[i*SIZE+j ,1]]
 
             # print(sess.run(y, feed_dict={x: batch_xs}))
             _, c = sess.run([optimizer, mse], feed_dict={x: batch_xs, y_: batch_ys})
