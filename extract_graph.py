@@ -13,7 +13,7 @@ with open("../data/London.pypgr", "r") as f:
             matrix[int(x[0])][int(x[1])] = float(x[2])
             print line
 
-file = open("data/LondonGraph.txt", "w")
+file = open("data/smallLondonGraph.txt", "w")
 for x in range(nodes):
     for y in range(nodes):
         if matrix[x][y] > 0:
