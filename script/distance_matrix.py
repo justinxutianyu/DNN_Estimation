@@ -4,9 +4,9 @@
 import time
 import pandas as pd
 
-city = "Melbourne"
-d = 3619
-SIZE = 3619 # 3619
+city = "London"
+d = 89127
+SIZE = 89127 # 3619
 data = pd.read_table("data/"+city+"Graph.txt",
                     sep = " ",
                     header = None,

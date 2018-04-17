@@ -60,9 +60,9 @@ distance_matrix = np.load(location+"DistanceMatrix.dat")
 print("Matrix is loaded")
 
 ######################## preprocessing data #######################
-max_distance = np.amax(test_distance_matrix)
+max_distance = np.amax(distance_matrix)
 distance_matrix = distance_matrix/max_distance
-test_distance_matrix = test_distance_matrix/max_distance
+# test_distance_matrix = test_distance_matrix/max_distance
 # # d : landmark number
 # # degreee heuristic
 # degree = edges.vx.value_counts()
