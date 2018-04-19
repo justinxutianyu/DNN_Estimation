@@ -4,13 +4,28 @@
 import time
 import pandas as pd
 
+<<<<<<< HEAD
+city = "London"
+d = 36544
+SIZE = 89127 # 3619
+=======
 city = "smallLondon"
+<<<<<<< HEAD
 d = 36545
 SIZE = 36545  # 3619
 data = pd.read_table("data/" + city + "Graph.txt",
                      sep=" ",
                      header=None,
                      names=['vx', 'vy', 'weight'])
+=======
+d = 36544
+SIZE = 36544 # 3619
+>>>>>>> 6881be3b9c2ce165ae701dc49756f5d60c480e0e
+data = pd.read_table("data/"+city+"Graph.txt",
+                    sep = " ",
+                    header = None,
+                    names = ['vx', 'vy', 'weight'])
+>>>>>>> 4d4ccee195b33d1197e5d46b3ea24aa47c1ed26d
 
 # centrality heuristic
 import networkx as nx
