@@ -4,9 +4,15 @@
 import time
 import pandas as pd
 
+<<<<<<< HEAD
 city = "London"
 d = 36544
 SIZE = 89127 # 3619
+=======
+city = "smallLondon"
+d = 36544
+SIZE = 36544 # 3619
+>>>>>>> 6881be3b9c2ce165ae701dc49756f5d60c480e0e
 data = pd.read_table("data/"+city+"Graph.txt",
                     sep = " ",
                     header = None,
@@ -35,3 +41,4 @@ for i in graph_dict.keys():
     print(str(i)+"th completed")
 
 # distanceMatrix.dump(city+"LandmarkDistanceMatrix.dat")
+distanceMatrix.dump(city+"DistanceMatrix.dat")
