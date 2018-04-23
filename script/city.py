@@ -22,6 +22,16 @@ class City(object):
             self.batch_size = 8105
             self.location = 'NewYork'
 
+        if city == 'SL':
+            self.size = 36545
+            self.test_Size = 36545
+            self.learning_rate = 0.001
+            self.d = 5000
+            self.epoch = 5
+            self.unit = 100
+            self.batch_size = 36545
+            self.location = 'smallLondon'
+
     def name(self, time):
         filename = self.location + "_NN" + time + "_" + \
             str(self.unit) + "Units" + str(self.epoch) + \
