@@ -1,13 +1,13 @@
 class City(object):
-    
+
     def __init__(self, city):
-        
+
         if city == 'Mel':
-            self.size = 3619  # 3619 
-            self.test_size = 3619 
+            self.size = 3619  # 3619
+            self.test_size = 3619
             self.learning_rate = 0.001
             self.d = 3619  # 500
-            self.epoch = 1
+            self.epoch = 20
             self.unit = 100
             self.batch_size = 3619
             self.location = 'Melbourne'
@@ -23,6 +23,8 @@ class City(object):
             self.location = 'NewYork'
 
     def name(self, time):
-        filename = self.location+"_NN" + time+"_"+str(self.Units) + "Units" + str(self.epochs) + "Epochs" + str(self.learning_rate) + "Rate"
+        filename = self.location + "_NN" + time + "_" + \
+            str(self.unit) + "Units" + str(self.epoch) + \
+            "Epochs" + str(self.learning_rate) + "Rate"
 
         return filename

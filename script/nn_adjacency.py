@@ -6,14 +6,17 @@ from __future__ import print_function
 import time
 import tensorflow as tf
 import numpy as np
+import logging
 import matplotlib
+logging.getLogger().setLevel(logging.INFO)
+matplotlib.use('Agg')
+
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
 import util
 import city
 ######################## set parameters ##################
 timestr = time.strftime("%Y%m%d-%H%M%S")
-matplotlib.use('Agg')
 
 # Intialize class city
 city = city.City('Mel')
@@ -21,12 +24,8 @@ city = city.City('Mel')
 filename = city.name(timestr)
 
 ########################  loading data and graph #######################
-distance_matrix, test_distance_matrix = util.load_data(city)
+distance_matrix, test_distance_matrix, max_distance = util.load_adj_data(city)
 
-######################## preprocessing data #######################
-max_distance = np.amax(test_distance_matrix)
-distance_matrix = distance_matrix / max_distance
-test_distance_matrix = test_distance_matrix / max_distance
 
 ######################## shuffle input #######################
 index = util.shuffle(city.size)
@@ -69,7 +68,7 @@ print('Start training')
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, filename+"_model"+".ckpt")
+    saver.save(sess, "data/" + filename + "_model" + ".ckpt")
     loss_array = []
     size = city.size
     d = city.d
@@ -99,7 +98,7 @@ with tf.Session() as sess:
     plt.plot(loss_array)
     plt.ylabel('nn_loss')
     plt.savefig("picture/" + filename + '_loss.png')
-    
+
     # Load testing data
     test_size = city.test_size
     d = city.d
@@ -147,10 +146,11 @@ with tf.Session() as sess:
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / test_size
-        print('test_step:', (i + 1), 'relative error =', '{:.6f}'.format(batch_relative_error * 100))
+        print('test_step:', (i + 1), 'relative error =',
+              '{:.6f}'.format(batch_relative_error * 100))
         e = mean_absolute_error(pred_y, actual_y)
         absolute_error += e
-        print('test_step:', (i + 1), 'abslute error =', '{:.6f}'.format(e) )
+        print('test_step:', (i + 1), 'absolute error =', '{:.6f}'.format(e))
 
         cost += c
 
@@ -167,6 +167,5 @@ with tf.Session() as sess:
 
     plt.xlabel('batch')
     plt.ylabel('error')
-    plt.legend()
 
     plt.savefig("picture/" + filename + "_test.png")

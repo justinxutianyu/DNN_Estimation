@@ -25,11 +25,11 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 ######################## set parameters ##################
 
-SIZE = 3619  # 3619 
-test_Size = 3619 
+SIZE = 3619  # 3619
+test_Size = 3619
 learning_rate = 0.001
 d = 500  # 500
-epochs = 20
+epochs = 50
 Units = 100
 batch_size = SIZE
 location = "Melbourne"
@@ -56,7 +56,7 @@ graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
 # graph_nodes = graph.nodes()
 graph_dict = nx.to_dict_of_dicts(graph)
 G = nx.Graph(graph_dict)
-test_distance_matrix = np.load(location+"DistanceMatrix.dat")
+test_distance_matrix = np.load(location + "DistanceMatrix.dat")
 distance_matrix = np.load(location + "LandmarkDistanceMatrix.dat")
 print("Matrix is loaded")
 
@@ -83,23 +83,31 @@ np.random.shuffle(index)
 x = tf.placeholder(tf.float32, [None, 2 * d], name='x')  # inpute features
 y_ = tf.placeholder(tf.float32, [None, 1], name='y')  # predictions
 
-# hidden layer 1
+# Input layer 1
 W1 = tf.Variable(tf.truncated_normal(
     [2 * d, Units], mean=0.0, stddev=0.01), name='W1')
 b1 = tf.Variable(tf.truncated_normal([Units]), name='b1')
 
 # hidden layer 2
 W2 = tf.Variable(tf.truncated_normal(
-    [Units, 1], mean=0.0, stddev=0.01), name='W2')
-b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
+    [Units, Units], mean=0.0, stddev=0.01), name='W2')
+b2 = tf.Variable(tf.truncated_normal([Units]), name='b2')
+
+# hidden layer 3
+W3 = tf.Variable(tf.truncated_normal(
+    [Units, 1], mean=0.0, stddev=0.01), name='W3')
+b3 = tf.Variable(tf.truncated_normal([1]), name='b3')
 
 
 ######################## Activations, outputs ######################
 # output hidden layer 1
-hidden_out = tf.nn.relu(tf.matmul(x, W1) + b1)
+hidden_out1 = tf.nn.relu(tf.matmul(x, W1) + b1)
+
+# output hidden layer 2
+hidden_out2 = tf.nn.relu(tf.matmul(hidden_out1, W2) + b2)
 
 # total output
-y = tf.nn.sigmoid(tf.matmul(hidden_out, W2) + b2)
+y = tf.nn.sigmoid(tf.matmul(hidden_out2, W3) + b3)
 
 ####################### Loss Function  #########################
 mse = tf.losses.mean_squared_error(y, y_)
@@ -246,11 +254,11 @@ with tf.Session() as sess:
         print('test_step:', (i + 1), 'relative error =', temp_error * 100)
         temp_error2 = mean_absolute_error(pred_y, actual_y)
         mean_error += temp_error2
-        print('test_step:', (i + 1), 'abslute error =', temp_error2 )
+        print('test_step:', (i + 1), 'abslute error =', temp_error2)
 
-        relative_error2 = np.abs(np.mean(pred_y) -
-                                 np.mean(actual_y)) / np.mean(actual_y)
-        print('test_step:', (i + 1), 'relative error2 =', relative_error2 * 100)
+        # relative_error2 = np.abs(np.mean(pred_y) -
+        #                          np.mean(actual_y)) / np.mean(actual_y)
+        # print('test_step:', (i + 1), 'relative error2 =', relative_error2 * 100)
 
         # accuracy = tf.reduce_mean(tf.abs(tf.subtract(y, y_)))
         cost += c
@@ -259,8 +267,8 @@ with tf.Session() as sess:
     print("Max distance", max_distance)
     print("Mean actual distance: ", true_distance / (test_Size * test_Size))
     print("Mean predicted distance: ", pred_distance / (test_Size * test_Size))
-    print("Max average error: ", max(dif))
-    print("Min average error: ", min(dif))
+    print("Max mse: ", max(dif))
+    print("Min mse: ", min(dif))
     print("Mean Absolute error", mean_error / test_Size)
     print("Mean relative error", mean_error2 * 100 / (test_Size * test_Size))
 
