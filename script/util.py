@@ -44,8 +44,8 @@ def shuffle(size):
 
 def shuffle_batch(size, batch):
     # random shuffle input data
-    a = np.asarray(sorted(range(size) * batch), dtype=np.int32)
-    b = np.asarray(range(batch) * size, dtype=np.int32)
+    a = np.asarray(sorted(list(range(size)) * batch), dtype=np.int32)
+    b = np.asarray(list(range(batch)) * size, dtype=np.int32)
     a = a.reshape(size * batch, 1)
     b = b.reshape(size * batch, 1)
     index = np.concatenate((a, b), axis=1)
