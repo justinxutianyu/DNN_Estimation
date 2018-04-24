@@ -27,11 +27,7 @@ class City(object):
             self.test_size = 36545
             self.learning_rate = 0.001
             self.d = 5000
-<<<<<<< HEAD
-            self.epoch = 0
-=======
             self.epoch = 5
->>>>>>> 08d9f6995e5c46c00eb581f2d5b97d2bee062401
             self.unit = 100
             self.batch_size = 5000
             self.location = 'smallLondon'
