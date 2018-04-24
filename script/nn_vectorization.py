@@ -70,7 +70,7 @@ print('Start training')
 
 with tf.Session() as sess:
     tf.global_variables_initializer().run()
-    saver.save(sess, "data/" + filename + "_model" + ".ckpt")
+    saver.save(sess, "model/" + filename + "_model" + ".ckpt")
     loss_array = []
     size = city.size
     d = city.d
