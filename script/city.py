@@ -14,7 +14,7 @@ class City(object):
 
         if city == 'NY':
             self.size = 8105
-            self.test_Size = 8105
+            self.test_size = 8105
             self.learning_rate = 0.001
             self.d = 1000
             self.epoch = 20
@@ -24,10 +24,10 @@ class City(object):
 
         if city == 'SL':
             self.size = 36545
-            self.test_Size = 36545
+            self.test_size = 36545
             self.learning_rate = 0.001
             self.d = 5000
-            self.epoch = 1
+            self.epoch = 0
             self.unit = 100
             self.batch_size = 5000
             self.location = 'smallLondon'

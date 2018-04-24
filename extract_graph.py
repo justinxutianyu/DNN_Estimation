@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-nodes = 36545
+nodes = 1025216
 #matrix = [[0 for x in range(nodes)] for y in range(nodes)]
 
 matrix = np.zeros((nodes, nodes))

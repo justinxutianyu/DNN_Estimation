@@ -1,2 +1,2 @@
-model_checkpoint_path: "smallLondon_NN20180424-025713_100Units1Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "smallLondon_NN20180424-025713_100Units1Epochs0.001Rate_model.ckpt"
+model_checkpoint_path: "smallLondon_NN20180424-142852_100Units0Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "smallLondon_NN20180424-142852_100Units0Epochs0.001Rate_model.ckpt"
