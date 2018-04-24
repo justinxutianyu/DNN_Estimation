@@ -25,8 +25,12 @@ filename = city.name(timestr)
 
 ########################  loading data and graph #######################
 path = "/mnt/Project/data"
-distance_matrix, test_distance_matrix, max_distance = util.load_SL_data(
+distance_matrix, test_distance_matrix, max_distance = util.load_SL_train(
     city, path)
+
+
+######################## shuffle input #######################
+# index = util.shuffle(city.size)
 
 ######################## set some variables #######################
 x = tf.placeholder(tf.float32, [None, 2 * city.d], name='x')  # inpute features
@@ -71,22 +75,23 @@ with tf.Session() as sess:
     size = city.size
     d = city.d
     epoch = city.epoch
+    batch = city.batch_size
     for k in range(epoch):
-        index = util.shuffle(size)
+        index = util.shuffle_batch(size, batch)
         for i in range(size):
             # batch_xs, batch_ys = # mnist.train.next_batch(100)
             # print(str(i+1) + "th training")
-            batch_xs = np.zeros(shape=(size, 2 * d))
-            batch_ys = np.zeros(shape=(size, 1))
-            for j in range(size):
+            batch_xs = np.zeros(shape=(batch, 2 * d))
+            batch_ys = np.zeros(shape=(batch, 1))
+            for j in range(batch):
                 vi = np.squeeze(np.asarray(
-                    distance_matrix[index[i * size + j, 0], :]))
+                    distance_matrix[index[i * batch + j, 0], :]))
                 vj = np.squeeze(np.asarray(
-                    distance_matrix[index[i * size + j, 1], :]))
+                    distance_matrix[index[i * batch + j, 1], :]))
 
                 batch_xs[j] = np.concatenate([vi, vj])
                 batch_ys[j] = test_distance_matrix[
-                    index[i * size + j, 0], index[i * size + j, 1]]
+                    index[i * batch + j, 0], index[i * batch + j, 1]]
 
             _, c = sess.run([optimizer, mse], feed_dict={
                             x: batch_xs, y_: batch_ys})
@@ -100,6 +105,7 @@ with tf.Session() as sess:
     # Load testing data
     test_size = city.test_size
     d = city.d
+    batch = city.batch_size
     # temporal variable
     # dif = []
     cost = 0
@@ -110,13 +116,13 @@ with tf.Session() as sess:
     relative_error_list = []
     absolute_error_list = []
     for i in range(test_size):
-        test_x = np.zeros(shape=(test_size, 2 * d))
-        test_y = np.zeros(shape=(test_size, 1))
+        test_x = np.zeros(shape=(batch, 2 * d))
+        test_y = np.zeros(shape=(batch, 1))
         avg_cost = 0
-        pred_y = np.zeros(shape=(test_size))
-        actual_y = np.zeros(shape=(test_size))
+        pred_y = np.zeros(shape=(batch))
+        actual_y = np.zeros(shape=(batch))
         batch_relative_error = 0.0
-        for j in range(test_size):
+        for j in range(batch):
             vi = np.squeeze(np.asarray(distance_matrix[i, :]))
             vj = np.squeeze(np.asarray(distance_matrix[j, :]))
             test_x[j] = np.concatenate([vi, vj])
@@ -145,7 +151,7 @@ with tf.Session() as sess:
 
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
-        batch_relative_error = batch_relative_error / test_size * 100
+        batch_relative_error = batch_relative_error / batch * 100
         relative_error_list.append(batch_relative_error)
         print('test_step:', (i + 1), 'relative error =',
               '{:.6f}'.format(batch_relative_error))
@@ -158,12 +164,12 @@ with tf.Session() as sess:
 
     print("MSE: ", cost / test_size)
     print("Max distance", max_distance)
-    print("Mean actual distance: ", true_distance / (test_size * test_size))
-    print("Mean predicted distance: ", pred_distance / (test_size * test_size))
+    print("Mean actual distance: ", true_distance / (test_size * batch))
+    print("Mean predicted distance: ", pred_distance / (test_size * batch))
     print("Max average error: ", max(dif))
     print("Min average error: ", min(dif))
     print("Mean Absolute error", absolute_error / test_size)
-    print("Mean relative error", relative_error * 100 / (test_size * test_size))
+    print("Mean relative error", relative_error * 100 / (test_size * batch))
 
     plt.plot(relative_error_list)
     plt.xlabel('batch')
