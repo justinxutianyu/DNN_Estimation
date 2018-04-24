@@ -17,7 +17,7 @@ def load_graph(City):
 
 def get_landmarks(data, d):
     # d : landmark number
-    degreee heuristic
+    # degreee heuristic
     degree = data.vx.value_counts()
     print(type(degree))
     landmarks = degree[0:d].index
@@ -84,7 +84,7 @@ def generate_landmark_matrix(City, data, path):
     distanceMatrix.dump(os.path.join(path,
                                      location + "LandmarkDistanceMatrix.dat"))
 
-city = City('SL')
+city = city.City('SL')
 data = load_graph(city)
 path = "/mnt/Project/data"
 generate_landmark_matrix(city, data, path)

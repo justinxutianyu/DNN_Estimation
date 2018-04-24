@@ -24,11 +24,9 @@ city = city.City('SL')
 filename = city.name(timestr)
 
 ########################  loading data and graph #######################
-distance_matrix, test_distance_matrix, max_distance = util.load_adj_data(city)
-
-
-######################## shuffle input #######################
-index = util.shuffle(city.size)
+path = "/mnt/Project/data"
+distance_matrix, test_distance_matrix, max_distance = util.load_SL_data(
+    city, path)
 
 ######################## set some variables #######################
 x = tf.placeholder(tf.float32, [None, 2 * city.d], name='x')  # inpute features

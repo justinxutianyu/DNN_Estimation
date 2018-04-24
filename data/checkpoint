@@ -1,2 +1,2 @@
-model_checkpoint_path: "NewYork_nn_model0.001.ckpt"
-all_model_checkpoint_paths: "NewYork_nn_model0.001.ckpt"
+model_checkpoint_path: "smallLondon_NN20180424-025713_100Units1Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "smallLondon_NN20180424-025713_100Units1Epochs0.001Rate_model.ckpt"
