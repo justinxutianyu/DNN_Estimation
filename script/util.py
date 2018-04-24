@@ -161,3 +161,34 @@ def load_SL_train(City, path):
     test_distance_matrix = test_distance_matrix / max_distance
 
     return (distance_matrix, test_distance_matrix, max_distance)
+
+
+def load_SL_test(City, path):
+
+    ########################  loading data and graph #######################
+    edges = pd.read_table("data/" + City.location + "Graph.txt",
+                          sep=" ",
+                          header=None,
+                          names=['vx', 'vy', 'weight'])
+
+    graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
+
+    temp1 = np.load(os.path.join(
+        path, City.location + "DistanceMatrix0.dat"))
+    temp2 = np.load(os.path.join(
+        path, City.location + "DistanceMatrix1.dat"))
+    test_distance_matrix = np.concatenate((temp1, temp2), axis=0)
+
+    max_distance = np.amax(test_distance_matrix)
+    test_distance_matrix = test_distance_matrix[:, -5000:]
+
+    distance_matrix = np.load(os.path.join(
+        path, City.location + "LandmarkDistanceMatrix.dat"))
+    print("Matrix is loaded")
+
+    ######################## preprocessing data #######################
+    max_distance = np.amax(test_distance_matrix)
+    distance_matrix = distance_matrix / max_distance
+    test_distance_matrix = test_distance_matrix / max_distance
+
+    return (distance_matrix, test_distance_matrix, max_distance)

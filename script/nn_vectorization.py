@@ -103,6 +103,10 @@ with tf.Session() as sess:
     plt.savefig("picture/" + filename + '_loss.png')
 
     # Load testing data
+    print('Start testing')
+    distance_matrix, test_distance_matrix, max_distance = util.load_SL_test(
+        city, path)
+
     test_size = city.test_size
     d = city.d
     batch = city.batch_size
