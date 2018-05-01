@@ -106,7 +106,7 @@ with tf.Session() as sess:
     test_size = city.test_size
     d = city.d
     # temporal variable
-    # dif = []
+    dif = []
     cost = 0
     absolute_error = 0.0
     relative_error = 0.0
@@ -146,7 +146,7 @@ with tf.Session() as sess:
 
             # error = tf.abs(tf.subtract(y, y_))
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
-        # dif.append(c)
+        dif.append(c)
 
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
