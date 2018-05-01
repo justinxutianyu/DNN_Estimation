@@ -55,7 +55,7 @@ def shuffle_batch(size, batch):
     return index
 
 
-def load_adj_data(City):
+def load_adj_data(City, path):
     edges = pd.read_table("data/" + City.location + "Graph.txt",
                           sep=" ",
                           header=None,
@@ -64,7 +64,8 @@ def load_adj_data(City):
     graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
     # graph_nodes = graph.nodes()
     # G = nx.Graph(graph_dict)
-    test_distance_matrix = np.load(City.location + "DistanceMatrix.dat")
+    test_distance_matrix = np.load(os.path.join(
+        path, City.location + "DistanceMatrix.dat"))
     adj_matrix = nx.to_numpy_matrix(graph)
     print("Matrix is loaded")
 

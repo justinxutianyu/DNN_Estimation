@@ -19,16 +19,18 @@ import city
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Intialize class city
-city = city.City('Mel')
+city = city.City('NY')
 
 filename = city.name(timestr)
 
 ########################  loading data and graph #######################
-distance_matrix, test_distance_matrix, max_distance = util.load_adj_data(city)
+path = "/mnt/Project/data"
+distance_matrix, test_distance_matrix, max_distance = util.load_adj_data(
+    city, path)
 
 
-######################## shuffle input #######################
-index = util.shuffle(city.size)
+# ######################## shuffle input #######################
+# index = util.shuffle(city.size)
 
 ######################## set some variables #######################
 x = tf.placeholder(tf.float32, [None, 2 * city.d], name='x')  # inpute features
@@ -73,14 +75,15 @@ with tf.Session() as sess:
     size = city.size
     d = city.d
     epoch = city.epoch
+    batch = city.batch_size
     for k in range(epoch):
-        index = util.shuffle(size)
+        index = util.shuffle_batch(size, batch)
         for i in range(size):
             # batch_xs, batch_ys = # mnist.train.next_batch(100)
             # print(str(i+1) + "th training")
             batch_xs = np.zeros(shape=(size, 2 * d))
             batch_ys = np.zeros(shape=(size, 1))
-            for j in range(size):
+            for j in range(batch):
                 vi = np.squeeze(np.asarray(
                     distance_matrix[index[i * size + j, 0], :]))
                 vj = np.squeeze(np.asarray(
@@ -103,12 +106,14 @@ with tf.Session() as sess:
     test_size = city.test_size
     d = city.d
     # temporal variable
-    dif = []
+    # dif = []
     cost = 0
     absolute_error = 0.0
     relative_error = 0.0
     true_distance = 0.0
     pred_distance = 0.0
+    relative_error_list = []
+    absolute_error_list = []
     for i in range(test_size):
         test_x = np.zeros(shape=(test_size, 2 * d))
         test_y = np.zeros(shape=(test_size, 1))
@@ -141,15 +146,17 @@ with tf.Session() as sess:
 
             # error = tf.abs(tf.subtract(y, y_))
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
-        dif.append(c)
+        # dif.append(c)
 
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
-        batch_relative_error = batch_relative_error / test_size
+        batch_relative_error = batch_relative_error / test_size * 100
+        relative_error_list.append(batch_relative_error)
         print('test_step:', (i + 1), 'relative error =',
-              '{:.6f}'.format(batch_relative_error * 100))
+              '{:.6f}'.format(batch_relative_error))
         e = mean_absolute_error(pred_y, actual_y)
         absolute_error += e
+        absolute_error_list.append(e)
         print('test_step:', (i + 1), 'absolute error =', '{:.6f}'.format(e))
 
         cost += c
@@ -163,9 +170,13 @@ with tf.Session() as sess:
     print("Mean Absolute error", absolute_error / test_size)
     print("Mean relative error", relative_error * 100 / (test_size * test_size))
 
-    plt.plot(dif)
-
+    plt.plot(relative_error_list)
     plt.xlabel('batch')
-    plt.ylabel('error')
+    plt.ylabel('relative error')
+    plt.savefig("picture/" + filename + "_test1.png")
+    plt.clf()
 
-    plt.savefig("picture/" + filename + "_test.png")
+    plt.plot(absolute_error_list)
+    plt.xlabel('batch')
+    plt.ylabel('absolute error')
+    plt.savefig("picture/" + filename + "_test2.png")
