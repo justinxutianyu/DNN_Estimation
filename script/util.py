@@ -19,7 +19,8 @@ def load_data(City, path):
     # G = nx.Graph(graph_dict)
     test_distance_matrix = np.load(os.path.join(
         path, City.location + "DistanceMatrix.dat"))
-    distance_matrix = np.load(City.location + "LandmarkDistanceMatrix.dat")
+    distance_matrix = np.load(os.path.join(
+        path, City.location + "LandmarkDistanceMatrix.dat"))
     print("Matrix is loaded")
 
     ######################## preprocessing data #######################
@@ -27,7 +28,7 @@ def load_data(City, path):
     distance_matrix = distance_matrix / max_distance
     test_distance_matrix = test_distance_matrix / max_distance
 
-    return (distance_matrix, test_distance_matrix)
+    return (distance_matrix, test_distance_matrix, max_distance)
 
 
 def shuffle(size):

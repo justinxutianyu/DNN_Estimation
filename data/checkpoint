@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-model_checkpoint_path: "smallLondon_NN20180424-142852_100Units0Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "smallLondon_NN20180424-142852_100Units0Epochs0.001Rate_model.ckpt"
-=======
-model_checkpoint_path: "smallLondon_NN20180424-093705_100Units5Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "smallLondon_NN20180424-093705_100Units5Epochs0.001Rate_model.ckpt"
->>>>>>> 08d9f6995e5c46c00eb581f2d5b97d2bee062401
+model_checkpoint_path: "NewYork_NN20180430-002206_100Units20Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "NewYork_NN20180430-002206_100Units20Epochs0.001Rate_model.ckpt"

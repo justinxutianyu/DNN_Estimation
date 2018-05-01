@@ -19,13 +19,13 @@ import city
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Intialize class city
-city = city.City('SL')
+city = city.City('NY')
 
 filename = city.name(timestr)
 
 ########################  loading data and graph #######################
 path = "/mnt/Project/data"
-distance_matrix, test_distance_matrix, max_distance = util.load_SL_data(
+distance_matrix, test_distance_matrix, max_distance = util.load_data(
     city, path)
 
 ######################## set some variables #######################
@@ -39,16 +39,24 @@ b1 = tf.Variable(tf.truncated_normal([city.unit]), name='b1')
 
 # hidden layer 2
 W2 = tf.Variable(tf.truncated_normal(
-    [city.unit, 1], mean=0.0, stddev=0.01), name='W2')
+    [city.unit, city.unit], mean=0.0, stddev=0.01), name='W2')
 b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
+
+# hidden layer 3
+W3 = tf.Variable(tf.truncated_normal(
+    [city.unit, 1], mean=0.0, stddev=0.01), name='W3')
+b3 = tf.Variable(tf.truncated_normal([1]), name='b3')
 
 
 ######################## Activations, outputs ######################
 # output hidden layer 1
 hidden_out = tf.nn.relu(tf.matmul(x, W1) + b1)
 
+# output hidden layer 2
+hidden_out1 = tf.nn.relu(tf.matmul(hidden_out, W2) + b2)
+
 # total output
-y = tf.nn.sigmoid(tf.matmul(hidden_out, W2) + b2)
+y = tf.nn.sigmoid(tf.matmul(hidden_out1, W3) + b3)
 
 ####################### Loss Function  #########################
 mse = tf.losses.mean_squared_error(y, y_)
@@ -71,9 +79,10 @@ with tf.Session() as sess:
     size = city.size
     d = city.d
     epoch = city.epoch
+    batch = city.batch_size
     for k in range(epoch):
-        index = util.shuffle(size)
-        for i in range(size):
+        index = util.shuffle_batch(size, batch)
+        for i in range(batch):
             # batch_xs, batch_ys = # mnist.train.next_batch(100)
             # print(str(i+1) + "th training")
             batch_xs = np.zeros(shape=(size, 2 * d))
@@ -101,7 +110,7 @@ with tf.Session() as sess:
     test_size = city.test_size
     d = city.d
     # temporal variable
-    # dif = []
+    dif = []
     cost = 0
     absolute_error = 0.0
     relative_error = 0.0
@@ -141,7 +150,7 @@ with tf.Session() as sess:
 
             # error = tf.abs(tf.subtract(y, y_))
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
-        # dif.append(c)
+        dif.append(c)
 
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
