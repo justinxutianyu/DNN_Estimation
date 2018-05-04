@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 model_checkpoint_path: "NewYork_NN20180502-025219_100Units20Epochs0.001Rate_model.ckpt"
 all_model_checkpoint_paths: "NewYork_NN20180502-025219_100Units20Epochs0.001Rate_model.ckpt"
+=======
+model_checkpoint_path: "Melbourne_NN20180504-045616_100Units100Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Melbourne_NN20180504-045616_100Units100Epochs0.001Rate_model.ckpt"
+>>>>>>> b738cd26a20d9e768afbcdb3e6fcf54258cfbfa1
