@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-model_checkpoint_path: "NewYork_NN20180430-002206_100Units20Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "NewYork_NN20180430-002206_100Units20Epochs0.001Rate_model.ckpt"
-=======
-model_checkpoint_path: "NewYork_NN20180427-065352_100Units5Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "NewYork_NN20180427-065352_100Units5Epochs0.001Rate_model.ckpt"
->>>>>>> cbb9d834c95be5a38fb7baafa06734ecef3a06a4
+model_checkpoint_path: "NewYork_NN20180502-025219_100Units20Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "NewYork_NN20180502-025219_100Units20Epochs0.001Rate_model.ckpt"
