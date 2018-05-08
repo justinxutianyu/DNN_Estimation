@@ -79,6 +79,22 @@ def shuffle_batch(size, batch):
 
     return index
 
+def load_input_data(City, path, input_flag):
+    if input_flag == 'adj':
+        City.d = City.size
+        distance_matrix, test_distance_matrix, max_distance = load_adj_data(City, path)
+        result =  (test_distance_matrix, test_distance_matrix, max_distance)
+
+    if input_flag == 'all':
+        City.d = City.size
+        distance_matrix, test_distance_matrix, max_distance = load_data(City, path)
+        result =  (test_distance_matrix, test_distance_matrix, max_distance)
+        
+    if input_flag == 'landmark':
+        distance_matrix, test_distance_matrix, max_distance = load_landmark_data(City, path)
+        result =  (distance_matrix, test_distance_matrix, max_distance)
+
+    return result
 
 def load_adj_data(City, path):
     edges = pd.read_table("data/" + City.location + "Graph.txt",
@@ -219,3 +235,4 @@ def load_SL_test(City, path):
     test_distance_matrix = test_distance_matrix / max_distance
 
     return (distance_matrix, test_distance_matrix, max_distance)
+
