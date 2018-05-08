@@ -45,7 +45,7 @@ def load_landmark_data(City, path):
     test_distance_matrix = np.load(os.path.join(
         path, City.location + "DistanceMatrix.dat"))
     distance_matrix = np.load(os.path.join(
-        path, City.location + str(city.d)+"LandmarkDistanceMatrix.dat"))
+        path, City.location + str(City.d)+"LandmarkDistanceMatrix.dat"))
     print("Matrix is loaded")
 
     ######################## preprocessing data #######################

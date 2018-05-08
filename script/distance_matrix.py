@@ -84,19 +84,19 @@ def generate_landmark_matrix(City, data, path):
     distanceMatrix.dump(os.path.join(path,
                                      location + str(d)+"LandmarkDistanceMatrix.dat"))
 
-city = city.City('Mel')
+city = city.City('NY')
 data = load_graph(city)
 path = "/mnt/Project/data"
 city.d = 100
 generate_landmark_matrix(city, data, path)
-city.d = 300
-generate_landmark_matrix(city, data, path)
 city.d = 500
 generate_landmark_matrix(city, data, path)
-city.d = 700
+city.d = 1000
 generate_landmark_matrix(city, data, path)
-city.d = 900
+city.d = 1500
 generate_landmark_matrix(city, data, path)
 city.d = 2000
+generate_landmark_matrix(city, data, path)
+city.d = 2500
 generate_landmark_matrix(city, data, path)
 

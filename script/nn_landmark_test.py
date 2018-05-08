@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: JustinXu
 # @Date:   2018-05-08 12:31:28
-# @Last Modified by:   JustinXu
-# @Last Modified time: 2018-05-08 13:05:42
+# @Last Modified by:   tiany
+# @Last Modified time: 2018-05-08 15:49:17
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -39,19 +39,19 @@ for i in range(6):
 	abs_error_list.append(adam_abs_error)
 
 
-for i in rang(6):
+for i in range(6):
 	plt.plot(loss_array_list[i])
 plt.legend(landmark_label, loc='upper right')
 plt.savefig("picture/"+optimize_time+"_landmark_loss_test.png")
 plt.clf()
 
-for i in rang(6):
+for i in range(6):
 	plt.plot(rel_error_list[i])
 plt.legend(landmark_label, loc='upper right')
 plt.savefig("picture/"+optimize_time+"_landmark_relerror_test.png")
 plt.clf()
 
-for i in rang(6):
+for i in range(6):
 	plt.plot(abs_error_list[i])
 plt.legend(landmark_label, loc='upper right')
 plt.savefig("picture/"+optimize_time+"_landmark_abserror_test.png")
