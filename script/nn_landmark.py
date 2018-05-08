@@ -19,7 +19,7 @@ import city
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Intialize class city
-city = city.City('Mel')
+city = city.City('NY')
 
 filename = city.name(timestr)
 
