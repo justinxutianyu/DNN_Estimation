@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:42:23
-# @Last Modified by:   tiany
-# @Last Modified time: 2018-05-07 18:03:35
+# @Last Modified by:   JustinXu
+# @Last Modified time: 2018-05-08 12:58:29
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -25,6 +25,9 @@ import compute
 
 optimize_time = time.strftime("%Y%m%d-%H%M%S")
 city = city.City('Mel')
+
+landmark_list = [100, 300,500, 700, 900, 2000]
+
 
 mom_loss_array, mom_rel_error, mom_abs_error = compute.compute(city, "Momentum")
 

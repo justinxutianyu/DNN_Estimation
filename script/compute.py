@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
-# @Last Modified by:   tiany
-# @Last Modified time: 2018-05-07 18:18:02
+# @Last Modified by:   JustinXu
+# @Last Modified time: 2018-05-08 13:06:13
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -136,7 +136,7 @@ def compute(city, optimizer_flag):
 	    pred_distance = 0.0
 	    relative_error_list = []
 	    absolute_error_list = []
-	    for i in range(test_size):
+	    for i in range(100):
 	        test_x = np.zeros(shape=(test_size, 2 * d))
 	        test_y = np.zeros(shape=(test_size, 1))
 	        avg_cost = 0
