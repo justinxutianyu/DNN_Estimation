@@ -30,6 +30,31 @@ def load_data(City, path):
 
     return (distance_matrix, test_distance_matrix, max_distance)
 
+def load_landmark_data(City, path):
+
+    ########################  loading data and graph #######################
+    edges = pd.read_table("data/" + City.location + "Graph.txt",
+                          sep=" ",
+                          header=None,
+                          names=['vx', 'vy', 'weight'])
+
+    graph = nx.from_pandas_edgelist(edges, 'vx', 'vy', 'weight')
+    # graph_nodes = graph.nodes()
+    # graph_dict = nx.to_dict_of_dicts(graph)
+    # G = nx.Graph(graph_dict)
+    test_distance_matrix = np.load(os.path.join(
+        path, City.location + "DistanceMatrix.dat"))
+    distance_matrix = np.load(os.path.join(
+        path, City.location + str(City.d)+"LandmarkDistanceMatrix.dat"))
+    print("Matrix is loaded")
+
+    ######################## preprocessing data #######################
+    max_distance = np.amax(test_distance_matrix)
+    distance_matrix = distance_matrix / max_distance
+    test_distance_matrix = test_distance_matrix / max_distance
+
+    return (distance_matrix, test_distance_matrix, max_distance)
+
 
 def load_all_data(City, path):
 
@@ -80,6 +105,22 @@ def shuffle_batch(size, batch):
 
     return index
 
+def load_input_data(City, path, input_flag):
+    if input_flag == 'adj':
+        City.d = City.size
+        distance_matrix, test_distance_matrix, max_distance = load_adj_data(City, path)
+        result =  (test_distance_matrix, test_distance_matrix, max_distance)
+
+    if input_flag == 'all':
+        City.d = City.size
+        distance_matrix, test_distance_matrix, max_distance = load_data(City, path)
+        result =  (test_distance_matrix, test_distance_matrix, max_distance)
+        
+    if input_flag == 'landmark':
+        distance_matrix, test_distance_matrix, max_distance = load_landmark_data(City, path)
+        result =  (distance_matrix, test_distance_matrix, max_distance)
+
+    return result
 
 def load_adj_data(City, path):
     edges = pd.read_table("data/" + City.location + "Graph.txt",
@@ -220,3 +261,4 @@ def load_SL_test(City, path):
     test_distance_matrix = test_distance_matrix / max_distance
 
     return (distance_matrix, test_distance_matrix, max_distance)
+
