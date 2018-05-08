@@ -7,7 +7,11 @@ class City(object):
             self.test_size = 3619
             self.learning_rate = 0.001
             self.d = 500  # 500
+<<<<<<< HEAD
             self.epoch = 10
+=======
+            self.epoch = 1
+>>>>>>> 8356e0be015e409127ec4d1d7f4b12edb5d1a711
             self.unit = 100
             self.batch_size = 3619
             self.location = 'Melbourne'
