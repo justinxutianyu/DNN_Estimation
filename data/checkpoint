@@ -1,2 +1,2 @@
-model_checkpoint_path: "Momentum_Melbourne_NN20180507-081810_100Units20Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "Momentum_Melbourne_NN20180507-081810_100Units20Epochs0.001Rate_model.ckpt"
+model_checkpoint_path: "Momentum_Melbourne_NN20180508-022436_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Momentum_Melbourne_NN20180508-022436_100Units10Epochs0.001Rate_model.ckpt"
