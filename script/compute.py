@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
-# @Last Modified by:   JustinXu
-# @Last Modified time: 2018-05-08 23:15:54
+# @Last Modified by:   tiany
+# @Last Modified time: 2018-05-08 23:22:16
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -322,11 +322,11 @@ def dif_input_compute(city, optimizer_flag, input_flag):
 	    relative_error_list = []
 	    absolute_error_list = []
 
-	    index = np.asarray(range(size)
-	    np.random.shuffle(index))
+	    index = np.asarray(range(size))
+	    np.random.shuffle(index)
 	    index = index[:test_size]
 	    for k in range(test_size):
-	    	i = index[k]
+	        i = index[k]
 	        test_x = np.zeros(shape=(batch, 2 * d))
 	        test_y = np.zeros(shape=(batch, 1))
 	        avg_cost = 0
