@@ -43,16 +43,20 @@ b1 = tf.Variable(tf.truncated_normal([city.unit]), name='b1')
 
 # hidden layer 2
 W2 = tf.Variable(tf.truncated_normal(
-    [city.unit, 1], mean=0.0, stddev=0.01), name='W2')
-b2 = tf.Variable(tf.truncated_normal([1]), name='b2')
+    [city.unit, 20], mean=0.0, stddev=0.01), name='W2')
+b2 = tf.Variable(tf.truncated_normal([20]), name='b2')
+
+# hidden layer 3
+W3 = tf.Variable(tf.truncated_normal(
+    [20, 1], mean=0.0, stddev=0.01), name='W3')
+b3 = tf.Variable(tf.truncated_normal([1]), name='b3')
 
 
 ######################## Activations, outputs ######################
 # output hidden layer 1
-hidden_out = tf.nn.relu(tf.matmul(x, W1) + b1)
-
-# total output
-y = tf.nn.sigmoid(tf.matmul(hidden_out, W2) + b2)
+h1 = tf.nn.relu(tf.matmul(x, W1) + b1)
+h2 = tf.nn.relu(tf.matmul(h1, W2) + b2)
+y = tf.nn.sigmoid(tf.matmul(h2, W3) + b3)
 
 ####################### Loss Function  #########################
 mse = tf.losses.mean_squared_error(y, y_)
