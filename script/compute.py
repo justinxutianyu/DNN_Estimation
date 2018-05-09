@@ -2,7 +2,7 @@
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
 # @Last Modified by:   tiany
-# @Last Modified time: 2018-05-08 23:22:16
+# @Last Modified time: 2018-05-09 02:29:41
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -125,7 +125,7 @@ def compute(city, optimizer_flag):
 	    plt.clf()
 
 	    # Load testing data
-	    test_size = city.test_size
+	    test_size = int(size/10)
 	    d = city.d
 	    # temporal variable
 	    dif = []
@@ -136,14 +136,19 @@ def compute(city, optimizer_flag):
 	    pred_distance = 0.0
 	    relative_error_list = []
 	    absolute_error_list = []
-	    for i in range(test_size):
-	        test_x = np.zeros(shape=(test_size, 2 * d))
-	        test_y = np.zeros(shape=(test_size, 1))
+
+	    index = np.asarray(range(size))
+	    np.random.shuffle(index)
+	    index = index[:test_size]
+	    for k in range(test_size):
+	        i = index[k]
+	        test_x = np.zeros(shape=(batch, 2 * d))
+	        test_y = np.zeros(shape=(batch, 1))
 	        avg_cost = 0
-	        pred_y = np.zeros(shape=(test_size))
-	        actual_y = np.zeros(shape=(test_size))
+	        pred_y = np.zeros(shape=(batch))
+	        actual_y = np.zeros(shape=(batch))
 	        batch_relative_error = 0.0
-	        for j in range(test_size):
+	        for j in range(batch):
 	            vi = np.squeeze(np.asarray(distance_matrix[i, :]))
 	            vj = np.squeeze(np.asarray(distance_matrix[j, :]))
 	            test_x[j] = np.concatenate([vi, vj])
@@ -170,27 +175,27 @@ def compute(city, optimizer_flag):
 	        c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
 	        dif.append(c)
 
-	        print('test_step:', (i + 1),
+	        print('test_step:', (k + 1),
 	              'mean squared error =', '{:.6f}'.format(c))
-	        batch_relative_error = batch_relative_error / test_size * 100
+	        batch_relative_error = batch_relative_error / batch * 100
 	        relative_error_list.append(batch_relative_error)
-	        print('test_step:', (i + 1), 'relative error =',
+	        print('test_step:', (k + 1), 'relative error =',
 	              '{:.6f}'.format(batch_relative_error))
 	        e = mean_absolute_error(pred_y, actual_y)
 	        absolute_error += e
 	        absolute_error_list.append(e)
-	        print('test_step:', (i + 1), 'absolute error =', '{:.6f}'.format(e))
+	        print('test_step:', (k + 1), 'absolute error =', '{:.6f}'.format(e))
 
 	        cost += c
 
 	    print("MSE: ", cost / test_size)
 	    print("Max distance", max_distance)
-	    print("Mean actual distance: ", true_distance / (test_size * test_size))
-	    print("Mean predicted distance: ", pred_distance / (test_size * test_size))
+	    print("Mean actual distance: ", true_distance / (test_size * batch))
+	    print("Mean predicted distance: ", pred_distance / (test_size * batch))
 	    print("Max average error: ", max(dif))
 	    print("Min average error: ", min(dif))
 	    print("Mean Absolute error", absolute_error / test_size)
-	    print("Mean relative error", relative_error * 100 / (test_size * test_size))
+	    print("Mean relative error", relative_error * 100 / (test_size * batch))
 
 	    plt.plot(relative_error_list)
 	    plt.xlabel('batch')

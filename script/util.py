@@ -117,7 +117,7 @@ def load_input_data(City, path, input_flag):
         result =  (test_distance_matrix, test_distance_matrix, max_distance)
         
     if input_flag == 'landmark':
-        distance_matrix, test_distance_matrix, max_distance = load_landmark_data(City, path)
+        distance_matrix, test_distance_matrix, max_distance = load_data(City, path)
         result =  (distance_matrix, test_distance_matrix, max_distance)
 
     return result
