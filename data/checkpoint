@@ -1,2 +1,17 @@
+<<<<<<< HEAD
 model_checkpoint_path: "adj_NewYork_NN20180508-163356_100Units10Epochs0.001Rate_model.ckpt"
 all_model_checkpoint_paths: "adj_NewYork_NN20180508-163356_100Units10Epochs0.001Rate_model.ckpt"
+=======
+<<<<<<< HEAD
+model_checkpoint_path: "Adam_Melbourne_NN20180509-045825_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Adam_Melbourne_NN20180509-045825_100Units10Epochs0.001Rate_model.ckpt"
+=======
+<<<<<<< HEAD
+model_checkpoint_path: "Melbourne_NN20180505-113038_100Units100Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Melbourne_NN20180505-113038_100Units100Epochs0.001Rate_model.ckpt"
+=======
+model_checkpoint_path: "adj_Melbourne_NN20180508-161856_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "adj_Melbourne_NN20180508-161856_100Units10Epochs0.001Rate_model.ckpt"
+>>>>>>> e084c9009d8ec117ace9c081200f8ddc02aee1ae
+>>>>>>> 26ca98c343ab85d33b3328eca76e244f78f65e52
+>>>>>>> 1c6768a6bc1c7020ce1872bb2cc4444d635b51ff

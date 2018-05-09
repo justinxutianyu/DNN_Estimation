@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
+<<<<<<< HEAD
 # @Last Modified by:   tiany
 # @Last Modified time: 2018-05-09 02:29:41
+=======
+# @Last Modified by:   JustinXu
+# @Last Modified time: 2018-05-09 17:59:16
+>>>>>>> 1c6768a6bc1c7020ce1872bb2cc4444d635b51ff
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
