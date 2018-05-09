@@ -1,2 +1,2 @@
-model_checkpoint_path: "adj_Melbourne_NN20180508-161856_100Units10Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "adj_Melbourne_NN20180508-161856_100Units10Epochs0.001Rate_model.ckpt"
+model_checkpoint_path: "Adam_Melbourne_NN20180509-045825_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Adam_Melbourne_NN20180509-045825_100Units10Epochs0.001Rate_model.ckpt"
