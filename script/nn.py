@@ -25,7 +25,7 @@ filename = city.name(timestr)
 
 ########################  loading data and graph #######################
 path = "/mnt/Project/data"
-distance_matrix, test_distance_matrix, max_distance = util.load_data(
+distance_matrix, test_distance_matrix, max_distance = util.load_all_data(
     city, path)
 
 ######################## set some variables #######################
@@ -39,12 +39,12 @@ b1 = tf.Variable(tf.truncated_normal([city.unit]), name='b1')
 
 # hidden layer 2
 W2 = tf.Variable(tf.truncated_normal(
-    [city.unit, city.unit], mean=0.0, stddev=0.01), name='W2')
-b2 = tf.Variable(tf.truncated_normal([city.unit]), name='b2')
+    [city.unit, 20], mean=0.0, stddev=0.01), name='W2')
+b2 = tf.Variable(tf.truncated_normal([20]), name='b2')
 
 # hidden layer 3
 W3 = tf.Variable(tf.truncated_normal(
-    [city.unit, 1], mean=0.0, stddev=0.01), name='W3')
+    [20, 1], mean=0.0, stddev=0.01), name='W3')
 b3 = tf.Variable(tf.truncated_normal([1]), name='b3')
 
 ######################## Activations, outputs ######################
