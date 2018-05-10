@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
-# @Last Modified by:   JustinXu
-# @Last Modified time: 2018-05-09 20:41:28
+# @Last Modified by:   tiany
+# @Last Modified time: 2018-05-09 21:03:55
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -404,7 +404,7 @@ def dif_input_compute(city, optimizer_flag, input_flag):
 def layer(x, input_size, output_size, activation):
 	W = tf.Variable(tf.truncated_normal([input_size, output_size], mean=0.0, stddev=0.01))
 	b = tf.Variable(tf.truncated_normal([output_size]))
-	if activation == 'relu'：
+	if activation == 'relu':
 		h = tf.nn.relu(tf.matmul(x, W) + b)
 	if activation == 'sigmoid':
 		h = tf.nn.sigmoid(tf.matmul(x, W) + b)
