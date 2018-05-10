@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: JustinXu
 # @Date:   2018-05-09 20:11:41
-# @Last Modified by:   JustinXu
-# @Last Modified time: 2018-05-09 20:42:53
+# @Last Modified by:   tiany
+# @Last Modified time: 2018-05-09 21:03:21
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -57,8 +57,8 @@ def layer_test(city, layers):
 
 
 layers = [3,4,5,6]
-city = city.City('Mel')
-layer_test(city, layers)
+mel = city.City('Mel')
+layer_test(mel, layers)
 
-city = city.City('NY')
-layer_test(city, layers)
+newyork = city.City('NY')
+layer_test(newyork, layers)
