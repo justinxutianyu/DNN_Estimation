@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+# @Author: Steven_Xu
+# @Date:   2018-05-09 17:54:49
+# @Last Modified by:   Steven_Xu
+# @Last Modified time: 2018-05-10 16:19:16
+
 ######################### import stuff ##########################
 from __future__ import absolute_import
 from __future__ import division
@@ -63,7 +69,7 @@ mse = tf.losses.mean_squared_error(y, y_)
 # error = tf.reduce_mean(tf.abs(tf.subtract(y,y_)))
 
 # sys.exit(0)
-optimizer = tf.train.GradientDescentOptimizer(
+optimizer = tf.train.AdamOptimizer(
     learning_rate=city.learning_rate).minimize(mse)
 
 # ####################### Saver         #########################
@@ -111,9 +117,8 @@ with tf.Session() as sess:
     distance_matrix, test_distance_matrix, max_distance = util.load_SL_test(
         city, path)
 
-    test_size = city.test_size
+    test_size = int(size / 10)
     d = city.d
-    batch = city.batch_size
     # temporal variable
     dif = []
     cost = 0
@@ -123,7 +128,12 @@ with tf.Session() as sess:
     pred_distance = 0.0
     relative_error_list = []
     absolute_error_list = []
-    for i in range(test_size):
+
+    index = np.asarray(range(size))
+    np.random.shuffle(index)
+    index = index[:test_size]
+    for k in range(test_size):
+        i = index[k]
         test_x = np.zeros(shape=(batch, 2 * d))
         test_y = np.zeros(shape=(batch, 1))
         avg_cost = 0
@@ -157,16 +167,17 @@ with tf.Session() as sess:
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
         dif.append(c)
 
-        print('test_step:', (i + 1),
+        print('test_step:', (k + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / batch * 100
         relative_error_list.append(batch_relative_error)
-        print('test_step:', (i + 1), 'relative error =',
+        print('test_step:', (k + 1), 'relative error =',
               '{:.6f}'.format(batch_relative_error))
         e = mean_absolute_error(pred_y, actual_y)
         absolute_error += e
         absolute_error_list.append(e)
-        print('test_step:', (i + 1), 'absolute error =', '{:.6f}'.format(e))
+        print('test_step:', (k + 1),
+              'absolute error =', '{:.6f}'.format(e))
 
         cost += c
 
@@ -189,3 +200,83 @@ with tf.Session() as sess:
     plt.xlabel('batch')
     plt.ylabel('absolute error')
     plt.savefig("picture/" + filename + "_test2.png")
+    plt.clf()
+
+    # test_size = city.test_size
+    # d = city.d
+    # batch = city.batch_size
+    # # temporal variable
+    # dif = []
+    # cost = 0
+    # absolute_error = 0.0
+    # relative_error = 0.0
+    # true_distance = 0.0
+    # pred_distance = 0.0
+    # relative_error_list = []
+    # absolute_error_list = []
+    # for i in range(test_size):
+    #     test_x = np.zeros(shape=(batch, 2 * d))
+    #     test_y = np.zeros(shape=(batch, 1))
+    #     avg_cost = 0
+    #     pred_y = np.zeros(shape=(batch))
+    #     actual_y = np.zeros(shape=(batch))
+    #     batch_relative_error = 0.0
+    #     for j in range(batch):
+    #         vi = np.squeeze(np.asarray(distance_matrix[i, :]))
+    #         vj = np.squeeze(np.asarray(distance_matrix[j, :]))
+    #         test_x[j] = np.concatenate([vi, vj])
+    #         test_y[j] = test_distance_matrix[i, j]  # use the origin matrix
+    #         testx = np.reshape(test_x[j], (1, 2 * d))
+    #         testy = np.reshape(test_y[j], (1, 1))
+    #         pred = sess.run(y, feed_dict={x: testx})[0, 0]
+    #         # pred = pred[0][0]
+    #         y_true = test_y[j, 0]
+    #         pred_y[j] = pred * max_distance
+    #         actual_y[j] = y_true * max_distance
+
+    #         if y_true != 0:
+    #             pred_distance += pred_y[j]
+    #             true_distance += actual_y[j]
+    #             temp = abs(
+    #                 pred_y[j] - actual_y[j]) / (actual_y[j] + 1)
+    #             # filter larger ratio
+    #             temp = min(temp, 1.0)
+    #             batch_relative_error += temp
+    #             relative_error += temp
+
+    #         # error = tf.abs(tf.subtract(y, y_))
+    #     c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
+    #     dif.append(c)
+
+    #     print('test_step:', (i + 1),
+    #           'mean squared error =', '{:.6f}'.format(c))
+    #     batch_relative_error = batch_relative_error / batch * 100
+    #     relative_error_list.append(batch_relative_error)
+    #     print('test_step:', (i + 1), 'relative error =',
+    #           '{:.6f}'.format(batch_relative_error))
+    #     e = mean_absolute_error(pred_y, actual_y)
+    #     absolute_error += e
+    #     absolute_error_list.append(e)
+    #     print('test_step:', (i + 1), 'absolute error =', '{:.6f}'.format(e))
+
+    #     cost += c
+
+    # print("MSE: ", cost / test_size)
+    # print("Max distance", max_distance)
+    # print("Mean actual distance: ", true_distance / (test_size * batch))
+    # print("Mean predicted distance: ", pred_distance / (test_size * batch))
+    # print("Max average error: ", max(dif))
+    # print("Min average error: ", min(dif))
+    # print("Mean Absolute error", absolute_error / test_size)
+    # print("Mean relative error", relative_error * 100 / (test_size * batch))
+
+    # plt.plot(relative_error_list)
+    # plt.xlabel('batch')
+    # plt.ylabel('relative error')
+    # plt.savefig("picture/" + filename + "_test1.png")
+    # plt.clf()
+
+    # plt.plot(absolute_error_list)
+    # plt.xlabel('batch')
+    # plt.ylabel('absolute error')
+    # plt.savefig("picture/" + filename + "_test2.png")
