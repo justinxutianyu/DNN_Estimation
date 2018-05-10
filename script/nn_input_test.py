@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: JustinXu
 # @Date:   2018-05-08 22:18:56
-# @Last Modified by:   JustinXu
-# @Last Modified time: 2018-05-08 22:31:02
+# @Last Modified by:   tiany
+# @Last Modified time: 2018-05-09 02:30:08
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -69,8 +69,8 @@ def input_test(city):
 	plt.savefig("picture/"+city.location+"_"+optimize_time+"_input_abserror_test.png")
 	plt.clf()
 
-city = city.City('Mel')
-input_test(city)
-
-# city = city.City('NY')
+# city = city.City('Mel')
 # input_test(city)
+
+city = city.City('NY')
+input_test(city)
