@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
-<<<<<<< HEAD
-# @Last Modified by:   tiany
-# @Last Modified time: 2018-05-09 21:03:55
-=======
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-10 16:16:38
->>>>>>> 3e0014555f4e0396faea770b8c130e50c568fb3f
+# @Last Modified time: 2018-05-10 16:39:47
+
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -411,15 +407,16 @@ def dif_input_compute(city, optimizer_flag, input_flag):
 
 
 def layer(x, input_size, output_size, activation):
-<<<<<<< HEAD
-	W = tf.Variable(tf.truncated_normal([input_size, output_size], mean=0.0, stddev=0.01))
-	b = tf.Variable(tf.truncated_normal([output_size]))
-	if activation == 'relu':
-		h = tf.nn.relu(tf.matmul(x, W) + b)
-	if activation == 'sigmoid':
-		h = tf.nn.sigmoid(tf.matmul(x, W) + b)
-	return h
-=======
+<< << << < HEAD
+    W = tf.Variable(tf.truncated_normal(
+        [input_size, output_size], mean=0.0, stddev=0.01))
+    b = tf.Variable(tf.truncated_normal([output_size]))
+    if activation == 'relu':
+        h = tf.nn.relu(tf.matmul(x, W) + b)
+    if activation == 'sigmoid':
+        h = tf.nn.sigmoid(tf.matmul(x, W) + b)
+    return h
+== == == =
     W = tf.Variable(tf.truncated_normal(
         [input_size, output_size], mean=0.0, stddev=0.01))
     b = tf.Variable(tf.truncated_normal([output_size]))
@@ -429,7 +426,8 @@ def layer(x, input_size, output_size, activation):
         h = tf.nn.sigmoid(tf.matmul(x, W) + b)
     return h
 
->>>>>>> 3e0014555f4e0396faea770b8c130e50c568fb3f
+>>>>>> > 3e0014555f4e0396faea770b8c130e50c568fb3f
+
 
 def dif_layer_compute(city, optimizer_flag, layer_num):
     ######################## set parameters ##################
