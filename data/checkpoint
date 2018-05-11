@@ -1,4 +1,8 @@
 <<<<<<< HEAD
+model_checkpoint_path: "Adam_NewYork_NN20180510-162006_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "Adam_NewYork_NN20180510-162006_100Units10Epochs0.001Rate_model.ckpt"
+=======
+<<<<<<< HEAD
 model_checkpoint_path: "Adam_NewYork_NN20180510-070451_100Units10Epochs0.001Rate_model.ckpt"
 all_model_checkpoint_paths: "Adam_NewYork_NN20180510-070451_100Units10Epochs0.001Rate_model.ckpt"
 =======
@@ -30,3 +34,4 @@ all_model_checkpoint_paths: "adj_Melbourne_NN20180508-161856_100Units10Epochs0.0
 >>>>>>> a9cbb7526d20049e8a9e8532dcf06a145ebcfea4
 >>>>>>> 3e0014555f4e0396faea770b8c130e50c568fb3f
 >>>>>>> 5f582bdf2d5c6db0f4485dabedd4308aacee5a77
+>>>>>>> cdc0939209c9dcabbaeb0db191211692912d9b04
