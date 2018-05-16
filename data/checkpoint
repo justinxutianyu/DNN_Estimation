@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-model_checkpoint_path: "Adam_NewYork_NN20180513-073547_100Units10Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "Adam_NewYork_NN20180513-073547_100Units10Epochs0.001Rate_model.ckpt"
-=======
-model_checkpoint_path: "Adam_NewYork_NN20180513-184205_100Units10Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "Adam_NewYork_NN20180513-184205_100Units10Epochs0.001Rate_model.ckpt"
->>>>>>> 665f05782b6bac915661f6a0442b3c8881670617
+model_checkpoint_path: "all_NewYork_NN20180515-015327_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "all_NewYork_NN20180515-015327_100Units10Epochs0.001Rate_model.ckpt"
