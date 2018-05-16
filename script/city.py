@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: JustinXu
 # @Date:   2018-05-07 15:41:52
-# @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-11 11:57:23
+# @Last Modified by:   xutianyu
+# @Last Modified time: 2018-05-14 18:52:03
 
 
 class City(object):
@@ -34,7 +34,7 @@ class City(object):
             self.test_size = 36545
             self.learning_rate = 0.001
             self.d = 5000
-            self.epoch = 5
+            self.epoch = 3
             self.unit = 100
             self.batch_size = 5000
             self.location = 'smallLondon'
