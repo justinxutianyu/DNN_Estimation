@@ -2,7 +2,7 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-10 16:19:16
+# @Last Modified time: 2018-05-17 21:07:55
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -129,11 +129,7 @@ with tf.Session() as sess:
     relative_error_list = []
     absolute_error_list = []
 
-    index = np.asarray(range(size))
-    np.random.shuffle(index)
-    index = index[:test_size]
-    for k in range(test_size):
-        i = index[k]
+    for i in range(test_size):
         test_x = np.zeros(shape=(batch, 2 * d))
         test_y = np.zeros(shape=(batch, 1))
         avg_cost = 0
