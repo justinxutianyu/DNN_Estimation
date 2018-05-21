@@ -1,2 +1,2 @@
-model_checkpoint_path: "all_NewYork_NN20180515-015327_100Units10Epochs0.001Rate_model.ckpt"
-all_model_checkpoint_paths: "all_NewYork_NN20180515-015327_100Units10Epochs0.001Rate_model.ckpt"
+model_checkpoint_path: "landmark_NewYork_NN20180519-034205_100Units10Epochs0.001Rate_model.ckpt"
+all_model_checkpoint_paths: "landmark_NewYork_NN20180519-034205_100Units10Epochs0.001Rate_model.ckpt"

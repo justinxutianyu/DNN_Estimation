@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
-# @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-17 21:07:55
+# @Last Modified by:   xutianyu
+# @Last Modified time: 2018-05-17 21:11:26
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -163,16 +163,16 @@ with tf.Session() as sess:
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
         dif.append(c)
 
-        print('test_step:', (k + 1),
+        print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / batch * 100
         relative_error_list.append(batch_relative_error)
-        print('test_step:', (k + 1), 'relative error =',
+        print('test_step:', (i + 1), 'relative error =',
               '{:.6f}'.format(batch_relative_error))
         e = mean_absolute_error(pred_y, actual_y)
         absolute_error += e
         absolute_error_list.append(e)
-        print('test_step:', (k + 1),
+        print('test_step:', (i + 1),
               'absolute error =', '{:.6f}'.format(e))
 
         cost += c
