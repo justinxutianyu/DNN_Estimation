@@ -8,7 +8,7 @@ def extract_graph(city, nodes):
     # matrix = np.zeros((edges, 3))
     matrix = np.zeros((nodes, nodes))
     print(matrix.shape)
-    with open("../data/bigMelbourne.pypgr", "r") as f:
+    with open("../data/small.pypgr", "r") as f:
         for line in f:
             x = line.split(" ")
             if len(x) >= 6:
@@ -52,6 +52,6 @@ def extract_largeGraph(city, edges):
         print(str(i) + "th completed")
     file.close()
 
-edges = 1125141
-city = "bigMelbourne"
+edges = 2196
+city = "small"
 extract_largeGraph(city, edges)

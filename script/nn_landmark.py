@@ -2,7 +2,7 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-10 16:14:31
+# @Last Modified time: 2018-05-21 19:35:33
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -25,7 +25,7 @@ import city
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Intialize class city
-city = city.City('NY')
+city = city.City('Mel')
 
 filename = city.name(timestr)
 
@@ -151,9 +151,11 @@ with tf.Session() as sess:
                 relative_error += temp
 
             # error = tf.abs(tf.subtract(y, y_))
+        start = timeit.default_timer()
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
+        end = timeit.default_timer()
         dif.append(c)
-
+        print('batch time', (end - start))
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / test_size * 100
