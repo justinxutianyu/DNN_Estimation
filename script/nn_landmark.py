@@ -2,7 +2,7 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-21 19:42:08
+# @Last Modified time: 2018-05-21 19:43:32
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -158,7 +158,7 @@ with tf.Session() as sess:
         end = timeit.default_timer()
         run_time = run_time + (end - start)
         dif.append(c)
-        print('batch time', {: .6f}.format(run_time / (i + 1)))
+        print('batch time', '{:.6f}'.format(run_time / (i + 1)))
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / test_size * 100
