@@ -2,7 +2,7 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-21 19:35:33
+# @Last Modified time: 2018-05-21 19:38:21
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -21,6 +21,7 @@ import matplotlib.pyplot as plt
 from sklearn.metrics import mean_absolute_error
 import util
 import city
+import timeit
 ######################## set parameters ##################
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
