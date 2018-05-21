@@ -2,7 +2,7 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-09 17:54:49
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-21 19:38:21
+# @Last Modified time: 2018-05-21 19:42:08
 
 ######################### import stuff ##########################
 from __future__ import absolute_import
@@ -121,6 +121,7 @@ with tf.Session() as sess:
     pred_distance = 0.0
     relative_error_list = []
     absolute_error_list = []
+    run_time = 0
     for i in range(test_size):
         test_x = np.zeros(shape=(test_size, 2 * d))
         test_y = np.zeros(shape=(test_size, 1))
@@ -155,8 +156,9 @@ with tf.Session() as sess:
         start = timeit.default_timer()
         c = sess.run(mse, feed_dict={x: test_x, y_: test_y})
         end = timeit.default_timer()
+        run_time = run_time + (end - start)
         dif.append(c)
-        print('batch time', (end - start))
+        print('batch time', {: .6f}.format(run_time / (i + 1)))
         print('test_step:', (i + 1),
               'mean squared error =', '{:.6f}'.format(c))
         batch_relative_error = batch_relative_error / test_size * 100
