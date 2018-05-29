@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author: tiany
 # @Date:   2018-05-07 13:50:52
-# @Last Modified time: 2018-05-11 11:37:18
+# @Last Modified time: 2018-05-29 14:41:19
+# This file includes training and testing functions for distance estimation
 
 ######################### import stuff ##########################
 from __future__ import absolute_import

@@ -2,7 +2,8 @@
 # @Author: JustinXu
 # @Date:   2018-05-07 15:41:52
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-21 19:33:48
+# @Last Modified time: 2018-05-29 14:40:40
+# This file includes objects for our model containing cities.
 
 
 class City(object):

@@ -2,7 +2,8 @@
 # @Author: Steven_Xu
 # @Date:   2018-05-11 11:53:11
 # @Last Modified by:   Steven_Xu
-# @Last Modified time: 2018-05-11 11:55:11
+# @Last Modified time: 2018-05-29 14:40:05
+# This file is to compare our model with DiDi's method
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
